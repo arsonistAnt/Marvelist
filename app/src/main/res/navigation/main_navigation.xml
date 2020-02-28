@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/main_navigation"
+    app:startDestination="@id/browseFragment">
+
+    <fragment
+        android:id="@+id/browseFragment"
+        android:name="com.example.marvelist.ui.comicbrowser.BrowseFragment"
+        android:label="BrowseFragment" />
+    <fragment
+        android:id="@+id/comicDetailsFragment"
+        android:name="com.example.marvelist.ui.comicdetails.ComicDetailsFragment"
+        android:label="ComicDetailsFragment" />
+    <fragment
+        android:id="@+id/readingListFragment"
+        android:name="com.example.marvelist.ui.readinglist.ReadingListFragment"
+        android:label="ReadingListFragment" />
+</navigation>

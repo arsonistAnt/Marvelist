@@ -1,7 +1,7 @@
 package com.example.marvelist.injection.modules
 
-import com.example.marvelist.data.remote.MarvelComicService
-import com.example.marvelist.data.remote.MarvelApiInfo
+import com.example.marvelist.data.remote.networking.MarvelComicService
+import com.example.marvelist.data.remote.networking.MarvelApiInfo
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit

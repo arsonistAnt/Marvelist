@@ -1,4 +1,4 @@
-package com.example.marvelist.data.remote
+package com.example.marvelist.data.remote.networking
 
 import com.example.marvelist.data.remote.models.ResponseJson
 import io.reactivex.Observable

@@ -1,4 +1,4 @@
-package com.example.wyrmprint.injection
+package com.example.marvelist.injection
 
 import android.app.Activity
 import androidx.fragment.app.Fragment

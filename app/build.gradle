@@ -33,6 +33,9 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    dataBinding{
+        enabled = true
+    }
 
 }
 
@@ -50,8 +53,8 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
     // Navigation Component
-    implementation "androidx.navigation:navigation-fragment-ktx:2.2.0"
-    implementation "androidx.navigation:navigation-ui-ktx:2.2.0"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.2.1"
+    implementation "androidx.navigation:navigation-ui-ktx:2.2.1"
 
 
     // Coil

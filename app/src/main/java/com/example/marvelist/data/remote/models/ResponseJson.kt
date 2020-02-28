@@ -36,7 +36,5 @@ interface ResponseJson {
         val count: Int,
         val results: List<MarvelJson.Comic>
     )
-
-
 }
 

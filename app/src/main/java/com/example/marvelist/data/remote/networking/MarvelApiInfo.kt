@@ -1,4 +1,4 @@
-package com.example.marvelist.data.remote
+package com.example.marvelist.data.remote.networking
 
 import com.example.marvelist.utils.toHexString
 import java.security.DigestException

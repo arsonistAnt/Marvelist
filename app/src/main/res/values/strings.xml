@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Marvelist</string>
+    <string name="item_browse">Browse</string>
+    <string name="item_reading_list">Reading List</string>
+    <string name="item_preferences">Preferences</string>
 </resources>

@@ -1,6 +1,6 @@
 @file:Suppress("UNCHECKED_CAST")
 
-package com.example.wyrmprint.injection
+package com.example.marvelist.injection
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
