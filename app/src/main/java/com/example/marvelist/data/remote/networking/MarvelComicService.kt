@@ -4,7 +4,9 @@ import com.example.marvelist.data.remote.models.ResponseJson
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
+import javax.inject.Singleton
 
+@Singleton
 interface MarvelComicService {
 
     /**
@@ -26,11 +28,11 @@ interface MarvelComicService {
         resultOffset: Int,
         @Query("hash")
         hash: String,
+        @Query("limit")
+        resultLimit: Int = MarvelApiInfo.DEFAULT_RESULT_LIMIT,
         @Query("formatType")
         formatType: String = MarvelApiInfo.DEFAULT_FORMAT_TYPE,
         @Query("apikey")
-        apiKey: String = MarvelApiInfo.publicKey,
-        @Query("limit")
-        resultLimit: Int = MarvelApiInfo.DEFAULT_RESULT_LIMIT
+        apiKey: String = MarvelApiInfo.publicKey
     ): Observable<ResponseJson.Wrapper>
 }

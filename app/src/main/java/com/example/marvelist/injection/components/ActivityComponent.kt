@@ -1,6 +1,19 @@
 package com.example.marvelist.injection.components
 
+import com.example.marvelist.injection.modules.MarvelServiceModule
+import com.example.marvelist.injection.modules.MessageDigestModule
+import com.example.marvelist.ui.viewmodel.BrowserViewModel
+import dagger.Component
 import javax.inject.Singleton
 
+/**
+ * This component will used as the base dagger component that will provide all dependencies.
+ */
 @Singleton
-interface ActivityComponent
+@Component(
+    modules = [MarvelServiceModule::class,
+        MessageDigestModule::class]
+)
+interface ActivityComponent {
+    val browserViewModel: BrowserViewModel
+}

@@ -1,18 +1,29 @@
 package com.example.marvelist.ui.base
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.*
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.marvelist.R
 import com.example.marvelist.databinding.NavigationMainLayoutBinding
+import com.example.marvelist.injection.InjectionProvider
+import com.example.marvelist.injection.components.ActivityComponent
+import com.example.marvelist.injection.components.DaggerActivityComponent
 
-class NavigationHostActivity : AppCompatActivity() {
+class NavigationHostActivity : AppCompatActivity(), InjectionProvider {
     private lateinit var viewBinding: NavigationMainLayoutBinding
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
+
+    // Create base dagger component that will provide dependencies to fragments hosted in this activity.
+    override val component: ActivityComponent by lazy {
+        DaggerActivityComponent.builder().build()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
