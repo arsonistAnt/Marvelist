@@ -30,6 +30,10 @@ interface MarvelComicService {
         hash: String,
         @Query("limit")
         resultLimit: Int = MarvelApiInfo.DEFAULT_RESULT_LIMIT,
+        @Query("orderBy")
+        sortBy: String = MarvelApiInfo.DEFAULT_ORDER_BY,
+        @Query("format")
+        format: String = MarvelApiInfo.DEFAULT_FORMAT,
         @Query("formatType")
         formatType: String = MarvelApiInfo.DEFAULT_FORMAT_TYPE,
         @Query("apikey")

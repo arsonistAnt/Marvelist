@@ -2,7 +2,7 @@ package com.example.marvelist.injection.components
 
 import com.example.marvelist.injection.modules.MarvelServiceModule
 import com.example.marvelist.injection.modules.MessageDigestModule
-import com.example.marvelist.ui.viewmodel.BrowserViewModel
+import com.example.marvelist.ui.viewmodel.BrowseViewModel
 import dagger.Component
 import javax.inject.Singleton
 
@@ -15,5 +15,5 @@ import javax.inject.Singleton
         MessageDigestModule::class]
 )
 interface ActivityComponent {
-    val browserViewModel: BrowserViewModel
+    val browseViewModel: BrowseViewModel
 }

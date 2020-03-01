@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <!-- Bind the ComicPreview object to this layout.-->
+    <data>
+
+        <variable
+            name="comicItem"
+            type="com.example.marvelist.data.local.ComicPreview" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/example_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{comicItem.toString()}" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000000" />
+
+    </LinearLayout>
+</layout>

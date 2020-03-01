@@ -5,8 +5,10 @@ package com.example.marvelist.data.local
  * the RecyclerView adapters.
  */
 interface ComicBase {
-    val title : String
-    val comicDescription : String
+    var id: Int
+    var digitalId: Int
+    var title: String
+    var comicDescription: String
     var thumbnailUrl : String
-    val issueNo : Int
+    var issueNo: Int
 }

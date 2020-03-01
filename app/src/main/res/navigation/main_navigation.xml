@@ -6,7 +6,11 @@
     <fragment
         android:id="@+id/browseFragment"
         android:name="com.example.marvelist.ui.comicbrowser.BrowseFragment"
-        android:label="BrowseFragment" />
+        android:label="BrowseFragment">
+        <action
+            android:id="@+id/action_browseFragment_to_comicDetailsFragment"
+            app:destination="@id/comicDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/comicDetailsFragment"
         android:name="com.example.marvelist.ui.comicdetails.ComicDetailsFragment"

@@ -1,9 +1,11 @@
 package com.example.marvelist.data.remote.networking.comicpaging
 
 import androidx.paging.PositionalDataSource
-import com.example.marvelist.data.remote.models.MarvelJson
+import com.example.marvelist.data.local.ComicDetails
 import com.example.marvelist.data.remote.networking.MarvelComicService
 import com.example.marvelist.utils.MarvelHashUtil
+import com.example.marvelist.utils.scheduleAsync
+import com.example.marvelist.utils.toComicDetails
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import timber.log.Timber
@@ -18,18 +20,19 @@ class ComicDataSource @Inject constructor(
     private val marvelService: MarvelComicService,
     private val marvelHashUtil: MarvelHashUtil
 ) :
-    PositionalDataSource<MarvelJson.Comic>() {
+    PositionalDataSource<ComicDetails>() {
 
     private val disposable: CompositeDisposable = CompositeDisposable()
 
-    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<MarvelJson.Comic>) {
-        val hash = marvelHashUtil.calculateHash("0")
+    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<ComicDetails>) {
+        val hash = marvelHashUtil.calculateHash("${params.startPosition}")
         marvelService.getComicListPayload(
-            "0",
+            "${params.startPosition}",
             params.startPosition,
             hash,
             params.loadSize
         )
+            .scheduleAsync()
             .doOnError {
                 // TODO: Add error callback here.
                 Timber.e(it)
@@ -42,14 +45,14 @@ class ComicDataSource @Inject constructor(
                 it.data
             }
             .subscribe { container ->
-                val results = container.results
+                val results = container.results.map { it.toComicDetails() }
                 callback.onResult(results)
             }.addTo(disposable)
     }
 
     override fun loadInitial(
         params: LoadInitialParams,
-        callback: LoadInitialCallback<MarvelJson.Comic>
+        callback: LoadInitialCallback<ComicDetails>
     ) {
         val hash = marvelHashUtil.calculateHash("0")
         marvelService.getComicListPayload(
@@ -58,6 +61,7 @@ class ComicDataSource @Inject constructor(
             hash,
             params.requestedLoadSize
         )
+            .scheduleAsync()
             .doOnError {
                 // TODO: Add error callback here.
                 Timber.e(it)
@@ -70,8 +74,8 @@ class ComicDataSource @Inject constructor(
                 it.data
             }
             .subscribe { container ->
-                val results = container.results
-                callback.onResult(results, params.requestedStartPosition + 5, container.count)
+                val results = container.results.map { it.toComicDetails() }
+                callback.onResult(results, params.requestedStartPosition, params.requestedLoadSize)
             }.addTo(disposable)
     }
 

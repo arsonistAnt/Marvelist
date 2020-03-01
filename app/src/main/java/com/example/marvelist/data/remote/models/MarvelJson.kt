@@ -1,10 +1,9 @@
 package com.example.marvelist.data.remote.models
 
-import com.example.marvelist.data.local.ComicBase
 import com.squareup.moshi.JsonClass
 
 /**
- * An interface that contains Json classes for deserialization pertaining to the Marvel API.
+ * An interface that contains Json classes for deserializing information pertaining to the Marvel API.
  */
 interface MarvelJson {
     /**
@@ -18,6 +17,7 @@ interface MarvelJson {
     @JsonClass(generateAdapter = true)
     data class Comic(
         val id: Int,
+        val digitalId: Int,
         val title: String,
         val description: String?,
         val issueNumber: Int,
