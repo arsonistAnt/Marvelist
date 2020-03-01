@@ -20,9 +20,7 @@ fun ByteArray.toHexString(): String {
 /**
  * Convert [MarvelJson.Comic] to a [ComicDetails] object.
  */
-fun MarvelJson.Comic.toComicDetails(): ComicDetails {
-    return ComicDetails(this)
-}
+fun MarvelJson.Comic.toComicDetails() = ComicDetails(this)
 
 /**
  * Define extension function that provides a setup for async processing and main thread observing.

@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
+
+        <variable
+            name="comicDetails"
+            type="com.example.marvelist.data.local.ComicDetails" />
+    </data>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -10,6 +17,12 @@
             android:id="@+id/comicStuff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Comic Details" />
+            android:text="@{comicDetails.toString()}" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@{comicDetails.comicDescription}" />
     </LinearLayout>
 </layout>

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -92,6 +93,7 @@ class BrowseFragment : Fragment(), ComicPreviewItemListeners.OnItemClicked {
      */
     override fun onClick(comicItem: ComicPreview, position: Int) {
         val direction = R.id.action_browseFragment_to_comicDetailsFragment
-        findNavController().navigate(direction)
+        val bundle = bundleOf("comicId" to comicItem.id)
+        findNavController().navigate(direction, bundle)
     }
 }

@@ -3,6 +3,7 @@ package com.example.marvelist.data.remote.networking
 import com.example.marvelist.data.remote.models.ResponseJson
 import io.reactivex.Observable
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 import javax.inject.Singleton
 
@@ -36,6 +37,25 @@ interface MarvelComicService {
         format: String = MarvelApiInfo.DEFAULT_FORMAT,
         @Query("formatType")
         formatType: String = MarvelApiInfo.DEFAULT_FORMAT_TYPE,
+        @Query("apikey")
+        apiKey: String = MarvelApiInfo.publicKey
+    ): Observable<ResponseJson.Wrapper>
+
+    /**
+     * Request Comic book details specified by ID.
+     *
+     * @param comicId the comic book id to request details for.
+     *
+     * @return an Observable of type [ResponseJson.Wrapper]
+     */
+    @GET("v1/public/comics/{id}")
+    fun getComic(
+        @Path("id")
+        comicId: Int,
+        @Query("ts")
+        timeStamp: String,
+        @Query("hash")
+        hash: String,
         @Query("apikey")
         apiKey: String = MarvelApiInfo.publicKey
     ): Observable<ResponseJson.Wrapper>

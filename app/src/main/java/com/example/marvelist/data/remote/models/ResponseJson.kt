@@ -1,5 +1,7 @@
 package com.example.marvelist.data.remote.models
 
+import com.example.marvelist.data.remote.models.ResponseJson.Container
+import com.example.marvelist.data.remote.models.ResponseJson.Wrapper
 import com.squareup.moshi.JsonClass
 
 /**
@@ -28,7 +30,6 @@ interface ResponseJson {
      *
      * @see Wrapper
      */
-    @JsonClass(generateAdapter = true)
     data class Container(
         val offset: Int,
         val limit: Int,

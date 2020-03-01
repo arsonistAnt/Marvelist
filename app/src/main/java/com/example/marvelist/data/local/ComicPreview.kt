@@ -9,19 +9,13 @@ abstract class ComicPreview(
     override var title: String,
     override var comicDescription: String,
     override var thumbnailUrl: String,
-    override var issueNo: Int
+    override var issueNo: Int,
+    private val format: String
 ) : ComicBase {
 
     // TODO: Remove later.
     override fun toString(): String {
-        val digitalComic = { id: Int ->
-            if (id > 0)
-                "\n[DIGITAL]"
-            else
-                ""
-        }
-        return "Title: $title \nID: $id \n $issueNo${digitalComic(
-            digitalId
-        )}"
+
+        return "Title: $title \nID: $id \nTotal Issues #: $issueNo\n[${format}]"
     }
 }

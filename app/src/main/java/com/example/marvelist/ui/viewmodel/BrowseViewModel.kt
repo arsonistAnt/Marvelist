@@ -11,7 +11,7 @@ import javax.inject.Inject
 /**
  * A [ViewModel] that exposes and handles paging for Comic data in the API.
  */
-class BrowseViewModel @Inject constructor(private val comicRepository: ComicRepository) :
+class BrowseViewModel @Inject constructor(private val comicRepo: ComicRepository) :
     ViewModel() {
 
     private val comicPagedListConfig: PagedList.Config =
@@ -25,7 +25,7 @@ class BrowseViewModel @Inject constructor(private val comicRepository: ComicRepo
     init {
         // Initialize live data for the comic pager.
         val comicDataSourceFactory =
-            comicRepository.getComicDataSourceFactory().map { it as ComicPreview }
+            comicRepo.getComicDataSourceFactory().map { it as ComicPreview }
         comicPagedList = LivePagedListBuilder(comicDataSourceFactory, comicPagedListConfig).build()
     }
 }

@@ -14,7 +14,8 @@ class ComicDetails
     marvelComicJson.title,
     marvelComicJson.description ?: "",
     constructThumbnailUrl(marvelComicJson.thumbnail),
-    marvelComicJson.issueNumber
+    marvelComicJson.issueNumber,
+    marvelComicJson.format
 ) {
     var collection: List<MarvelJson.RelatedIssues>? = marvelComicJson.collectedIssues
     var author: MarvelJson.CreatorGroup? = marvelComicJson.creators
@@ -24,6 +25,4 @@ class ComicDetails
         fun constructThumbnailUrl(thumbnail: MarvelJson.Thumbnail) =
             "${thumbnail.path}${ThumbnailVariant.portraitLarge}${thumbnail.extension}"
     }
-
-
 }

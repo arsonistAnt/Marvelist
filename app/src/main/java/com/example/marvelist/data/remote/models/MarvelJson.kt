@@ -21,6 +21,7 @@ interface MarvelJson {
         val title: String,
         val description: String?,
         val issueNumber: Int,
+        val format: String,
         val thumbnail: Thumbnail,
         val collectedIssues: List<RelatedIssues>?,
         val creators: CreatorGroup?,
