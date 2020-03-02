@@ -14,7 +14,13 @@ import com.example.marvelist.databinding.NavigationMainLayoutBinding
 import com.example.marvelist.injection.InjectionProvider
 import com.example.marvelist.injection.components.ActivityComponent
 import com.example.marvelist.injection.components.DaggerActivityComponent
+import com.example.marvelist.injection.modules.ContextModule
 
+/**
+ * The Main activity that hosts all relevant fragments in the application. Contains
+ * a singleton [ActivityComponent] that provides any needed dependencies to the
+ * fragments that are hosted.
+ */
 class NavigationHostActivity : AppCompatActivity(), InjectionProvider {
     private lateinit var viewBinding: NavigationMainLayoutBinding
     private lateinit var navController: NavController
@@ -22,12 +28,17 @@ class NavigationHostActivity : AppCompatActivity(), InjectionProvider {
 
     // Create base dagger component that will provide dependencies to fragments hosted in this activity.
     override val component: ActivityComponent by lazy {
-        DaggerActivityComponent.builder().build()
+        val contextModule = ContextModule(this)
+        DaggerActivityComponent.builder()
+            .contextModule(contextModule).build()
     }
 
+    /**
+     * Initialize any base view components.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Initialize the view binding for this activity.
+        // Initialize the view binding and inflate the layout.
         viewBinding = NavigationMainLayoutBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
         setupDrawerNavigation(viewBinding)
@@ -49,10 +60,17 @@ class NavigationHostActivity : AppCompatActivity(), InjectionProvider {
         binding.mainNavView.setupWithNavController(navController)
     }
 
+    /**
+     * Allow the Navigation component to handle the callback otherwise
+     * the super method will handle it.
+     */
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+    /**
+     * Have the back button close the navigation drawer if it is open.
+     */
     override fun onBackPressed() {
         val drawerLayout = viewBinding.mainDrawerLayout
 

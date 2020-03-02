@@ -4,8 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.example.marvelist.data.local.ComicDetail
 import com.example.marvelist.data.local.ComicPreview
 import com.example.marvelist.data.repository.ComicRepository
+import com.example.marvelist.utils.toComicInfo
 import javax.inject.Inject
 
 /**
@@ -27,5 +29,14 @@ class BrowseViewModel @Inject constructor(private val comicRepo: ComicRepository
         val comicDataSourceFactory =
             comicRepo.getComicDataSourceFactory().map { it as ComicPreview }
         comicPagedList = LivePagedListBuilder(comicDataSourceFactory, comicPagedListConfig).build()
+    }
+
+    /**
+     * Store the [ComicDetail] into the local database.
+     *
+     * @param comic the object to save into the local database.
+     */
+    fun saveComicLocalDatabase(comic: ComicDetail) {
+        comicRepo.insertComic(comic.toComicInfo()).subscribe()
     }
 }

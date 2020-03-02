@@ -1,7 +1,7 @@
 package com.example.marvelist.data.remote.networking.comicpaging
 
 import androidx.paging.PositionalDataSource
-import com.example.marvelist.data.local.ComicDetails
+import com.example.marvelist.data.local.ComicDetail
 import com.example.marvelist.data.remote.networking.MarvelComicService
 import com.example.marvelist.utils.MarvelHashUtil
 import com.example.marvelist.utils.scheduleAsync
@@ -20,11 +20,11 @@ class ComicDataSource @Inject constructor(
     private val marvelService: MarvelComicService,
     private val marvelHashUtil: MarvelHashUtil
 ) :
-    PositionalDataSource<ComicDetails>() {
+    PositionalDataSource<ComicDetail>() {
 
     private val disposable: CompositeDisposable = CompositeDisposable()
 
-    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<ComicDetails>) {
+    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<ComicDetail>) {
         val hash = marvelHashUtil.calculateHash("${params.startPosition}")
         marvelService.getComicListPayload(
             "${params.startPosition}",
@@ -52,7 +52,7 @@ class ComicDataSource @Inject constructor(
 
     override fun loadInitial(
         params: LoadInitialParams,
-        callback: LoadInitialCallback<ComicDetails>
+        callback: LoadInitialCallback<ComicDetail>
     ) {
         val hash = marvelHashUtil.calculateHash("0")
         marvelService.getComicListPayload(
@@ -75,7 +75,7 @@ class ComicDataSource @Inject constructor(
             }
             .subscribe { container ->
                 val results = container.results.map { it.toComicDetails() }
-                callback.onResult(results, params.requestedStartPosition, params.requestedLoadSize)
+                callback.onResult(results, params.requestedStartPosition, container.total)
             }.addTo(disposable)
     }
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -11,15 +12,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.marvelist.R
+import com.example.marvelist.data.local.ComicDetail
 import com.example.marvelist.data.local.ComicPreview
 import com.example.marvelist.databinding.BrowseFragLayoutBinding
 import com.example.marvelist.injection.injector
 import com.example.marvelist.injection.viewModel
 import com.example.marvelist.ui.comicdetails.ComicDetailsFragment
 
-class BrowseFragment : Fragment(), ComicPreviewItemListeners.OnItemClicked {
+class BrowseFragment : Fragment(), ComicPreviewItemListeners.OnItemClicked,
+    ComicPreviewItemListeners.OnItemLongPressed {
     private lateinit var viewBinding: BrowseFragLayoutBinding
-    private lateinit var comicAdapter: ComicPreviewAdapter
+    private lateinit var comicPagedAdapter: ComicPreviewPagedAdapter
 
     // Provide the BrowserViewModel via injector dagger component.
     private val browserViewModel by viewModel {
@@ -54,7 +57,7 @@ class BrowseFragment : Fragment(), ComicPreviewItemListeners.OnItemClicked {
      */
     private fun setupObservableData() {
         browserViewModel.comicPagedList.observe(viewLifecycleOwner, Observer {
-            comicAdapter.submitList(it)
+            comicPagedAdapter.submitList(it)
         })
     }
 
@@ -65,12 +68,13 @@ class BrowseFragment : Fragment(), ComicPreviewItemListeners.OnItemClicked {
      */
     private fun setupComicBrowser(binding: BrowseFragLayoutBinding) {
         // Configure the ComicPreviewAdapter
-        comicAdapter = ComicPreviewAdapter(diffUtilCallback).apply {
+        comicPagedAdapter = ComicPreviewPagedAdapter(diffUtilCallback).apply {
             addItemClickListener(this@BrowseFragment)
+            addItemLongPressedListener(this@BrowseFragment)
         }
         // Configure the RecyclerView.
         binding.comicBrowseRecycler.apply {
-            adapter = comicAdapter
+            adapter = comicPagedAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
     }
@@ -82,18 +86,32 @@ class BrowseFragment : Fragment(), ComicPreviewItemListeners.OnItemClicked {
         super.onDestroyView()
         viewBinding.unbind()
         // Removes fragment reference from the comicAdapter.
-        comicAdapter.removeItemClickListener()
+        comicPagedAdapter.removeAllListeners()
     }
 
     /**
-     * OnClick method for [ComicPreviewAdapter] items. Action in this method will be
+     * OnClick method for [ComicPreviewPagedAdapter] items. Action in this method will be
      * used for navigational purposes, more specifically navigating to the [ComicDetailsFragment].
      *
-     * @see ComicPreviewAdapter.onClickListener
+     * @see ComicPreviewItemListeners.OnItemClicked
      */
     override fun onClick(comicItem: ComicPreview, position: Int) {
         val direction = R.id.action_browseFragment_to_comicDetailsFragment
         val bundle = bundleOf("comicId" to comicItem.id)
         findNavController().navigate(direction, bundle)
+    }
+
+    /**
+     * onLongPressed method for [ComicPreviewPagedAdapter] items.
+     *
+     * @see ComicPreviewItemListeners.OnItemLongPressed
+     */
+    override fun onLongPressed(comicItem: ComicPreview, position: Int) {
+        browserViewModel.saveComicLocalDatabase(comicItem as ComicDetail)
+        Toast.makeText(
+            requireContext(),
+            "Added  \"${comicItem.title}\" to the Reading List.",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }

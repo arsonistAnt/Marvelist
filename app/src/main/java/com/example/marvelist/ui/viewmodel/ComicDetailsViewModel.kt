@@ -3,13 +3,11 @@ package com.example.marvelist.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.marvelist.data.local.ComicDetails
+import com.example.marvelist.data.local.ComicDetail
 import com.example.marvelist.data.repository.ComicRepository
-import com.example.marvelist.utils.scheduleAsync
 import com.example.marvelist.utils.toComicDetails
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
-import timber.log.Timber
 import javax.inject.Inject
 
 class ComicDetailsViewModel @Inject constructor(private val comicRepo: ComicRepository) :
@@ -17,8 +15,8 @@ class ComicDetailsViewModel @Inject constructor(private val comicRepo: ComicRepo
     // Disposable object to rid of any lingering RxJava calls.
     private val disposables = CompositeDisposable()
     // LiveData to observe changes to the comic details data.
-    private val _comicDetailData = MutableLiveData<ComicDetails>()
-    val comicDetailData: LiveData<ComicDetails>
+    private val _comicDetailData = MutableLiveData<ComicDetail>()
+    val comicDetailData: LiveData<ComicDetail>
         get() = _comicDetailData
 
     /**
@@ -27,15 +25,7 @@ class ComicDetailsViewModel @Inject constructor(private val comicRepo: ComicRepo
      * @param comicId the comic book id.
      */
     fun getComicById(comicId: Int) {
-        comicRepo.getComic(comicId).scheduleAsync()
-            .doOnError {
-                // TODO: Error checking needs to be done here.
-                Timber.e(it)
-            }
-            .doOnNext {
-                // TODO: Check for correct status response.
-                Timber.i(it.status)
-            }
+        comicRepo.getComicDetailsApi(comicId)
             .map { wrapper ->
                 wrapper.data.results.firstOrNull()
             }
@@ -46,6 +36,9 @@ class ComicDetailsViewModel @Inject constructor(private val comicRepo: ComicRepo
             }.addTo(disposables)
     }
 
+    /**
+     * Cleanup any lingering resources.
+     */
     override fun onCleared() {
         super.onCleared()
         disposables.dispose()

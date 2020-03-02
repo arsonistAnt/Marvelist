@@ -13,11 +13,13 @@ import com.example.marvelist.databinding.ComicItemLayoutBinding
  * PagedList of type [ComicPreview] to load comic book data from the network.
  *
  */
-class ComicPreviewAdapter(diffCallBack: DiffUtil.ItemCallback<ComicPreview>) :
-    PagedListAdapter<ComicPreview, ComicPreviewAdapter.ComicViewHolder>(diffCallBack) {
+class ComicPreviewPagedAdapter(diffCallBack: DiffUtil.ItemCallback<ComicPreview>) :
+    PagedListAdapter<ComicPreview, ComicPreviewPagedAdapter.ComicViewHolder>(diffCallBack) {
 
     // An onClick listener for the  ComicViewHolder.
     private var onClickListener: ComicPreviewItemListeners.OnItemClicked? = null
+    // A long pressed listener for the  ComicViewHolder.
+    private var longPressedListener: ComicPreviewItemListeners.OnItemLongPressed? = null
 
     /**
      * A [RecyclerView.ViewHolder] class in charge of binding [ComicPreview] data to the View layout.
@@ -40,6 +42,19 @@ class ComicPreviewAdapter(diffCallBack: DiffUtil.ItemCallback<ComicPreview>) :
                 action()
             }
         }
+
+        /**
+         * Assign a function call back when the View has been clicked.
+         *
+         * @param action the function callback to assign to the View onClick method.
+         * @see addItemClickListener
+         */
+        fun addLongPressListener(action: () -> Unit) {
+            binding.exampleTitle.setOnLongClickListener {
+                action()
+                true
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComicViewHolder {
@@ -54,8 +69,13 @@ class ComicPreviewAdapter(diffCallBack: DiffUtil.ItemCallback<ComicPreview>) :
         val comicItem = getItem(position)
         comicItem?.let {
             holder.bind(comicItem)
-            holder.addClickListener {
-                onClickListener?.onClick(comicItem, position)
+            holder.apply {
+                addClickListener {
+                    onClickListener?.onClick(comicItem, position)
+                }
+                addLongPressListener {
+                    longPressedListener?.onLongPressed(comicItem, position)
+                }
             }
         }
     }
@@ -68,18 +88,30 @@ class ComicPreviewAdapter(diffCallBack: DiffUtil.ItemCallback<ComicPreview>) :
     }
 
     /**
-     * De-reference [onClickListener] for garbage collection.
+     * Add an [ComicPreviewItemListeners.OnItemClicked] listener to the adapter.
      */
-    fun removeItemClickListener() {
+    fun addItemLongPressedListener(listener: ComicPreviewItemListeners.OnItemLongPressed) {
+        longPressedListener = listener
+    }
+
+    /**
+     * De-reference [onClickListener] & [longPressedListener] for garbage collection.
+     */
+    fun removeAllListeners() {
         onClickListener = null
+        longPressedListener = null
     }
 }
 
 /**
- * A listener interface for [ComicPreview] items in the [ComicPreviewAdapter].
+ * A listener interface for [ComicPreview] items in the [ComicPreviewPagedAdapter].
  */
 interface ComicPreviewItemListeners {
     interface OnItemClicked {
         fun onClick(comicItem: ComicPreview, position: Int)
+    }
+
+    interface OnItemLongPressed {
+        fun onLongPressed(comicItem: ComicPreview, position: Int)
     }
 }

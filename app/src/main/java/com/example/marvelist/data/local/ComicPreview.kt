@@ -1,7 +1,7 @@
 package com.example.marvelist.data.local
 
 /**
- * Abstract class that contains only relevant information for previewing.
+ * Abstract class that contains only relevant information for previewing comic information.
  */
 abstract class ComicPreview(
     override var id: Int,
@@ -10,7 +10,7 @@ abstract class ComicPreview(
     override var comicDescription: String,
     override var thumbnailUrl: String,
     override var issueNo: Int,
-    private val format: String
+    val format: String
 ) : ComicBase {
 
     // TODO: Remove later.
