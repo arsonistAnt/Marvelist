@@ -184,9 +184,21 @@ class ReadingListItemAdapter(diffCallBack: DiffUtil.ItemCallback<ComicDetail>) :
     }
 
     /**
+     * Return a set of [ComicDetail] objects thats been marked for selection by the [multiSelectHandler]
+     *
+     * @return a set of [ComicDetail] objects
+     */
+    fun getSelection() = multiSelectHandler.getSelectionSet()
+
+
+    /**
      * Remove all selection UI and selection data.
      */
     fun clearSelection() {
+        // Remove selection UI from all view holders.
+        for (vh in selectedViewHolders) {
+            vh.toggleSelection(false)
+        }
         inSelectedState = false
         multiSelectHandler.clearSelection()
     }

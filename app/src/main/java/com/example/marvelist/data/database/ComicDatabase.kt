@@ -13,6 +13,12 @@ interface ComicInfoDao {
 
     @Query("SELECT * from comic_info")
     fun getAllComicInfo(): Observable<List<ComicInfo>>
+
+    @Query("DELETE FROM comic_info WHERE comicId = :comicId")
+    fun deleteComicByID(comicId: Int)
+
+    @Delete
+    fun deleteComics(comics: List<ComicInfo>)
 }
 
 /**

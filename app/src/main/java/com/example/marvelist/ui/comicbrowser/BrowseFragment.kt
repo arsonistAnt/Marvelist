@@ -108,6 +108,8 @@ class BrowseFragment : Fragment(), ComicItemListener.OnItemClicked,
      * @see ComicItemListener.OnItemLongPressed
      */
     override fun onLongPressed(comicItem: ComicPreview, position: Int) {
+        // Change action bar icons
+
         browserViewModel.saveComicLocalDatabase(comicItem as ComicDetail)
         Toast.makeText(
             requireContext(),

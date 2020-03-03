@@ -1,13 +1,18 @@
 package com.example.marvelist.data.database
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.example.marvelist.data.local.ComicDetail
 
 /**
  * Database entity version of [ComicDetail] class.
  */
-@Entity(tableName = "comic_info")
+@Entity(
+    tableName = "comic_info",
+    indices = [
+        Index(value = ["comicId", "description"])]
+)
 class ComicInfo(
     @PrimaryKey
     val comicId: Int,

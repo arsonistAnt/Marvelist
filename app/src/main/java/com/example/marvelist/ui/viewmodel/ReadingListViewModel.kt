@@ -3,6 +3,7 @@ package com.example.marvelist.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.marvelist.data.database.ComicInfo
 import com.example.marvelist.data.local.ComicDetail
 import com.example.marvelist.data.repository.ComicRepository
 import com.example.marvelist.utils.toComicDetails
@@ -32,6 +33,24 @@ class ReadingListViewModel @Inject constructor(private val comicRepo: ComicRepos
             .subscribe { comicInfoList ->
                 _savedComics.value = comicInfoList.map { it.toComicDetails() }
             }.addTo(disposables)
+    }
+
+    /**
+     * Remove a specific comic from the local database.
+     *
+     * @param comicId the comic id of the comic to remove.
+     */
+    fun removeComic(comicId: Int) {
+        comicRepo.deleteComicById(comicId).subscribe()
+    }
+
+    /**
+     * Remove a list of comics from the local database.
+     *
+     * @param comics a list of [ComicInfo] objects to remove from the database.
+     */
+    fun removeComics(comics: List<ComicInfo>) {
+        comicRepo.removeComics(comics).subscribe()
     }
 
     /**

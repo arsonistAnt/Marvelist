@@ -21,7 +21,7 @@ class ComicDatabaseModule {
             context,
             ComicDatabase::class.java,
             "comic-database"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
     @Singleton

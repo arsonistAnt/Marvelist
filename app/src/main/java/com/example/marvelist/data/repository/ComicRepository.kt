@@ -85,4 +85,35 @@ class ComicRepository @Inject constructor(
         .doOnError {
             Timber.e(it)
         }
+
+    /**
+     * Remove a comic from the local database.
+     *
+     * @param comicId the comic id to query for deletion.
+     */
+    fun deleteComicById(comicId: Int): Completable =
+        Completable.fromAction { comicInfoDao.deleteComicByID(comicId) }
+            .scheduleAsync()
+            .doOnError {
+                Timber.e(it)
+            }
+            .doOnComplete {
+                Timber.i("Finished database operation.")
+            }
+
+
+    /**
+     * Remove a list of comics from the local database.
+     *
+     * @param comics a list of [ComicInfo] objects to remove from the database.
+     */
+    fun removeComics(comics: List<ComicInfo>): Completable =
+        Completable.fromAction { comicInfoDao.deleteComics(comics) }
+            .scheduleAsync()
+            .doOnError {
+                Timber.e(it)
+            }
+            .doOnComplete {
+                Timber.i("Finished database operation.")
+            }
 }

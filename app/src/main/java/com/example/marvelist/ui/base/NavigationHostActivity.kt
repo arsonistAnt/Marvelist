@@ -15,6 +15,7 @@ import com.example.marvelist.injection.InjectionProvider
 import com.example.marvelist.injection.components.ActivityComponent
 import com.example.marvelist.injection.components.DaggerActivityComponent
 import com.example.marvelist.injection.modules.ContextModule
+import timber.log.Timber
 
 /**
  * The Main activity that hosts all relevant fragments in the application. Contains
@@ -38,6 +39,8 @@ class NavigationHostActivity : AppCompatActivity(), InjectionProvider {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Initialize timber logs
+        Timber.plant(Timber.DebugTree())
         // Initialize the view binding and inflate the layout.
         viewBinding = NavigationMainLayoutBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
