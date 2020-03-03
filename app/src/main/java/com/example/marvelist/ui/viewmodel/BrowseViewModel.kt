@@ -11,7 +11,8 @@ import com.example.marvelist.utils.toComicInfo
 import javax.inject.Inject
 
 /**
- * A [ViewModel] that exposes and handles paging for Comic data in the API.
+ * A [ViewModel] that exposes and handles paging for Comic data in the API. This model
+ * typically exposes data geared towards "front page" viewing and casual browsing.
  */
 class BrowseViewModel @Inject constructor(private val comicRepo: ComicRepository) :
     ViewModel() {

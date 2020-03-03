@@ -18,9 +18,10 @@ import com.example.marvelist.databinding.BrowseFragLayoutBinding
 import com.example.marvelist.injection.injector
 import com.example.marvelist.injection.viewModel
 import com.example.marvelist.ui.comicdetails.ComicDetailsFragment
+import com.example.marvelist.utils.ComicItemListener
 
-class BrowseFragment : Fragment(), ComicPreviewItemListeners.OnItemClicked,
-    ComicPreviewItemListeners.OnItemLongPressed {
+class BrowseFragment : Fragment(), ComicItemListener.OnItemClicked,
+    ComicItemListener.OnItemLongPressed {
     private lateinit var viewBinding: BrowseFragLayoutBinding
     private lateinit var comicPagedAdapter: ComicPreviewPagedAdapter
 
@@ -93,7 +94,7 @@ class BrowseFragment : Fragment(), ComicPreviewItemListeners.OnItemClicked,
      * OnClick method for [ComicPreviewPagedAdapter] items. Action in this method will be
      * used for navigational purposes, more specifically navigating to the [ComicDetailsFragment].
      *
-     * @see ComicPreviewItemListeners.OnItemClicked
+     * @see ComicItemListener.OnItemClicked
      */
     override fun onClick(comicItem: ComicPreview, position: Int) {
         val direction = R.id.action_browseFragment_to_comicDetailsFragment
@@ -104,7 +105,7 @@ class BrowseFragment : Fragment(), ComicPreviewItemListeners.OnItemClicked,
     /**
      * onLongPressed method for [ComicPreviewPagedAdapter] items.
      *
-     * @see ComicPreviewItemListeners.OnItemLongPressed
+     * @see ComicItemListener.OnItemLongPressed
      */
     override fun onLongPressed(comicItem: ComicPreview, position: Int) {
         browserViewModel.saveComicLocalDatabase(comicItem as ComicDetail)

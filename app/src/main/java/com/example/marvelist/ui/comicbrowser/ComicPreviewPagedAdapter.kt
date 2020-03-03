@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.marvelist.data.local.ComicPreview
 import com.example.marvelist.databinding.ComicItemLayoutBinding
+import com.example.marvelist.utils.ComicItemListener
 
 /**
  * Adapter class to display [ComicPreview] objects in a RecyclerView. This class takes a
@@ -17,9 +18,9 @@ class ComicPreviewPagedAdapter(diffCallBack: DiffUtil.ItemCallback<ComicPreview>
     PagedListAdapter<ComicPreview, ComicPreviewPagedAdapter.ComicViewHolder>(diffCallBack) {
 
     // An onClick listener for the  ComicViewHolder.
-    private var onClickListener: ComicPreviewItemListeners.OnItemClicked? = null
+    private var onClickListener: ComicItemListener.OnItemClicked? = null
     // A long pressed listener for the  ComicViewHolder.
-    private var longPressedListener: ComicPreviewItemListeners.OnItemLongPressed? = null
+    private var longPressedListener: ComicItemListener.OnItemLongPressed? = null
 
     /**
      * A [RecyclerView.ViewHolder] class in charge of binding [ComicPreview] data to the View layout.
@@ -81,16 +82,16 @@ class ComicPreviewPagedAdapter(diffCallBack: DiffUtil.ItemCallback<ComicPreview>
     }
 
     /**
-     * Add an [ComicPreviewItemListeners.OnItemClicked] listener to the adapter.
+     * Add an [ComicItemListener.OnItemClicked] listener to the adapter.
      */
-    fun addItemClickListener(listener: ComicPreviewItemListeners.OnItemClicked) {
+    fun addItemClickListener(listener: ComicItemListener.OnItemClicked) {
         onClickListener = listener
     }
 
     /**
-     * Add an [ComicPreviewItemListeners.OnItemClicked] listener to the adapter.
+     * Add an [ComicItemListener.OnItemClicked] listener to the adapter.
      */
-    fun addItemLongPressedListener(listener: ComicPreviewItemListeners.OnItemLongPressed) {
+    fun addItemLongPressedListener(listener: ComicItemListener.OnItemLongPressed) {
         longPressedListener = listener
     }
 
@@ -100,18 +101,5 @@ class ComicPreviewPagedAdapter(diffCallBack: DiffUtil.ItemCallback<ComicPreview>
     fun removeAllListeners() {
         onClickListener = null
         longPressedListener = null
-    }
-}
-
-/**
- * A listener interface for [ComicPreview] items in the [ComicPreviewPagedAdapter].
- */
-interface ComicPreviewItemListeners {
-    interface OnItemClicked {
-        fun onClick(comicItem: ComicPreview, position: Int)
-    }
-
-    interface OnItemLongPressed {
-        fun onLongPressed(comicItem: ComicPreview, position: Int)
     }
 }

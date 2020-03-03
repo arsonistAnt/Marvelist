@@ -10,6 +10,10 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import javax.inject.Inject
 
+/**
+ * A [ViewModel] that exposes a list of [ComicDetail] data from the local database. This model
+ * is also in charge updating and removal of the data in the database.
+ */
 class ReadingListViewModel @Inject constructor(private val comicRepo: ComicRepository) :
     ViewModel() {
     private val _savedComics = MutableLiveData<List<ComicDetail>>()
@@ -19,7 +23,10 @@ class ReadingListViewModel @Inject constructor(private val comicRepo: ComicRepos
     // Disposable object to rid of any lingering RxJava calls.
     private val disposables = CompositeDisposable()
 
-
+    /**
+     * Retrieve all [ComicDetail] data from the local database. This call will
+     * update the [_savedComics] live data once the retrieval is complete.
+     */
     fun getAllSavedComics() {
         comicRepo.getAllComics()
             .subscribe { comicInfoList ->

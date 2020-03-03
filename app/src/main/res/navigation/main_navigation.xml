@@ -6,7 +6,7 @@
     <fragment
         android:id="@+id/browseFragment"
         android:name="com.example.marvelist.ui.comicbrowser.BrowseFragment"
-        android:label="BrowseFragment">
+        android:label="Browse">
         <action
             android:id="@+id/action_browseFragment_to_comicDetailsFragment"
             app:destination="@id/comicDetailsFragment" />
@@ -14,9 +14,13 @@
     <fragment
         android:id="@+id/comicDetailsFragment"
         android:name="com.example.marvelist.ui.comicdetails.ComicDetailsFragment"
-        android:label="ComicDetailsFragment" />
+        android:label="Comic Details" />
     <fragment
         android:id="@+id/readingListFragment"
         android:name="com.example.marvelist.ui.readinglist.ReadingListFragment"
-        android:label="ReadingListFragment" />
+        android:label="Reading List">
+        <action
+            android:id="@+id/action_readingListFragment_to_comicDetailsFragment"
+            app:destination="@id/comicDetailsFragment" />
+    </fragment>
 </navigation>
