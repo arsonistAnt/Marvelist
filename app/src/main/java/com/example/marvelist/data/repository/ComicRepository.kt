@@ -124,12 +124,13 @@ class ComicRepository @Inject constructor(
     /**
      * Update the comic's data from the local database.
      *
-     * @param comic the [ComicInfo] to update in the database.
+     * @param comicId the comic id of the comic entity to update.
+     * @param readingProgress the new reading progress.
      *
      * @return a [Completable] type observable.
      */
-    fun updateComic(comic: ComicInfo): Completable =
-        Completable.fromAction { comicInfoDao.updateComicInfo(comic) }
+    fun updateComic(comicId: Int, readingProgress: Int): Completable =
+        Completable.fromAction { comicInfoDao.updateComicInfo(comicId, readingProgress) }
             .scheduleAsync()
             .doOnError {
                 Timber.e(it)

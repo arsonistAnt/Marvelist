@@ -3,6 +3,7 @@ package com.example.marvelist.ui.readinglist
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -64,14 +65,24 @@ class ReadingListItemAdapter(diffCallBack: DiffUtil.ItemCallback<ComicDetail>) :
         }
 
         /**
-         * Assign function callback to the [ChipGroup.OnCheckedChangeListener].
+         * Assign function callback to the the three reading status chips.
+         *
+         * Note: The [ChipGroup.OnCheckedChangeListener] can't be used since
+         * [setReadingStatusChip] triggers the callback and causes unwanted changes.
+         *
+         * @see setReadingStatusChip
          *
          * @param action the callback that takes a unique chip id.
          */
         fun addGroupChipListener(action: (chipId: Int) -> Unit) {
-            binding.readingStatusGroup.setOnCheckedChangeListener { chipGroup, id ->
-                action(id)
+            val listener = View.OnClickListener { view ->
+                view?.let {
+                    action(it.id)
+                }
             }
+            binding.readChip.setOnClickListener(listener)
+            binding.unreadChip.setOnClickListener(listener)
+            binding.inProgressChip.setOnClickListener(listener)
         }
 
         /**

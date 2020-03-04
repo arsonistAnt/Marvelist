@@ -183,14 +183,13 @@ class ReadingListFragment : Fragment(), ComicItemListener.OnItemClicked,
      * @see ReadingListItemAdapter
      */
     override fun onChecked(comicDetail: ComicDetail, chipId: Int) {
-        val comicInfo = comicDetail.toComicInfo()
         // Obtain new reading status based on chip checked.
         val newReadingStatus = when (chipId) {
             R.id.in_progress_chip -> ReadingProgress.IN_PROGRESS.ordinal
             R.id.unread_chip -> ReadingProgress.UNREAD.ordinal
             else -> ReadingProgress.READ.ordinal
         }
-        readingListViewModel.updateComicReadingStatus(comicInfo, newReadingStatus)
+        readingListViewModel.updateComicReadingStatus(comicDetail, newReadingStatus)
     }
 
     /**

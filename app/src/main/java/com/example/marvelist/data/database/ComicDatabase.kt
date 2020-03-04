@@ -20,8 +20,8 @@ interface ComicInfoDao {
     @Delete
     fun deleteComics(comics: List<ComicInfo>)
 
-    @Update
-    fun updateComicInfo(comicId: ComicInfo)
+    @Query("UPDATE comic_info SET readingProgress = :readingProgress WHERE comicId = :comicId")
+    fun updateComicInfo(comicId: Int, readingProgress: Int)
 }
 
 /**
