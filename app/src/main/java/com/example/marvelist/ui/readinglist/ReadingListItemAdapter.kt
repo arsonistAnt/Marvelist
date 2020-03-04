@@ -8,11 +8,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.marvelist.data.local.ComicDetail
+import com.example.marvelist.data.local.ReadingProgress
 import com.example.marvelist.databinding.ReadingStatusItemBinding
 import com.example.marvelist.ui.readinglist.ReadingListItemAdapter.ReadingStatusViewHolder
 import com.example.marvelist.utils.ComicItemListener
 import com.example.marvelist.utils.MultiSelectCallbacks
 import com.example.marvelist.utils.MultiSelectHandler
+import com.google.android.material.chip.ChipGroup
 
 /**
  * Adapter for displaying a list of [ComicDetail] items that has been saved from the local database. Uses the
@@ -31,12 +33,45 @@ class ReadingListItemAdapter(diffCallBack: DiffUtil.ItemCallback<ComicDetail>) :
     private var onClickListener: ComicItemListener.OnItemClicked? = null
     // A long pressed listener for the  ComicViewHolder.
     private var longPressedListener: ComicItemListener.OnItemLongPressed? = null
+    // Listener for when a chip has been checked in a view holder.
+    private var chipGroupListener: ReadingStatusChipListener.OnChipCheckedListener? = null
 
     class ReadingStatusViewHolder(val binding: ReadingStatusItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(comicDetail: ComicDetail) {
             binding.textView.text = comicDetail.title
+            setReadingStatusChip(comicDetail.progress)
+        }
+
+        /**
+         * Set status chip checked state based on [ReadingProgress] type.
+         *
+         * @param readingProgress the reading progress type
+         */
+        private fun setReadingStatusChip(readingProgress: ReadingProgress) {
+            when (readingProgress) {
+                ReadingProgress.IN_PROGRESS -> {
+                    binding.inProgressChip.isChecked = true
+                }
+                ReadingProgress.READ -> {
+                    binding.readChip.isChecked = true
+                }
+                else -> {
+                    binding.unreadChip.isChecked = true
+                }
+            }
+        }
+
+        /**
+         * Assign function callback to the [ChipGroup.OnCheckedChangeListener].
+         *
+         * @param action the callback that takes a unique chip id.
+         */
+        fun addGroupChipListener(action: (chipId: Int) -> Unit) {
+            binding.readingStatusGroup.setOnCheckedChangeListener { chipGroup, id ->
+                action(id)
+            }
         }
 
         /**
@@ -124,26 +159,31 @@ class ReadingListItemAdapter(diffCallBack: DiffUtil.ItemCallback<ComicDetail>) :
         comicItem: ComicDetail,
         position: Int
     ) {
-        // Handle click listeners
-        holder.addClickListener {
-            if (!inSelectedState)
-                onClickListener?.onClick(comicItem, position)
-            else {
+        holder.apply {
+            // Handle click listeners
+            addClickListener {
+                if (!inSelectedState)
+                    onClickListener?.onClick(comicItem, position)
+                else {
+                    // Multi selection actions
+                    val shouldToggleSelection = multiSelectHandler.toggleSelection(comicItem)
+                    holder.toggleSelection(shouldToggleSelection)
+                    selectedViewHolders.add(holder)
+                }
+            }
+            // Handle long press listeners
+            addLongPressListener {
+                longPressedListener?.onLongPressed(comicItem, position)
                 // Multi selection actions
+                inSelectedState = true
+                selectedViewHolders.add(holder)
                 val shouldToggleSelection = multiSelectHandler.toggleSelection(comicItem)
                 holder.toggleSelection(shouldToggleSelection)
-                selectedViewHolders.add(holder)
             }
-
-        }
-        // Handle long press listeners
-        holder.addLongPressListener {
-            longPressedListener?.onLongPressed(comicItem, position)
-            // Multi selection actions
-            inSelectedState = true
-            selectedViewHolders.add(holder)
-            val shouldToggleSelection = multiSelectHandler.toggleSelection(comicItem)
-            holder.toggleSelection(shouldToggleSelection)
+            // Handle chip group listener
+            addGroupChipListener { chipId ->
+                chipGroupListener?.onChecked(comicItem, chipId)
+            }
         }
     }
 
@@ -157,15 +197,6 @@ class ReadingListItemAdapter(diffCallBack: DiffUtil.ItemCallback<ComicDetail>) :
     }
 
     /**
-     * Add an [ComicItemListener.OnItemLongPressed] listener to the adapter.
-     *
-     * @param listener the callback for [ReadingStatusViewHolder]'s onLongPressed().
-     */
-    fun addItemLongPressedListener(listener: ComicItemListener.OnItemLongPressed) {
-        longPressedListener = listener
-    }
-
-    /**
      * Add an [MultiSelectCallbacks.OnUpdateItemSelection] listener to [multiSelectHandler].
      *
      * @param listener the callback for [multiSelectHandler].
@@ -175,12 +206,12 @@ class ReadingListItemAdapter(diffCallBack: DiffUtil.ItemCallback<ComicDetail>) :
     }
 
     /**
-     * Add an [MultiSelectCallbacks.OnClearSelection] listener to [multiSelectHandler].
+     * Add click listener for the reading status chips on each view holder.
      *
-     * @param listener the callback for [multiSelectHandler].
+     * @param listener the listener to add.
      */
-    fun addMultiSelectionOnClearListener(listener: MultiSelectCallbacks.OnClearSelection) {
-        multiSelectHandler.addClearedSelectionListener(listener)
+    fun addChipGroupListener(listener: ReadingStatusChipListener.OnChipCheckedListener) {
+        chipGroupListener = listener
     }
 
     /**
@@ -204,11 +235,21 @@ class ReadingListItemAdapter(diffCallBack: DiffUtil.ItemCallback<ComicDetail>) :
     }
 
     /**
-     * De-reference any listeners for garbage collection.
+     * De-reference any listeners/resources for garbage collection.
      */
     fun removeAllListeners() {
         onClickListener = null
         longPressedListener = null
+        chipGroupListener = null
         multiSelectHandler.removeAllListeners()
+    }
+}
+
+/**
+ * TODO: Add comments
+ */
+interface ReadingStatusChipListener {
+    interface OnChipCheckedListener {
+        fun onChecked(comicDetail: ComicDetail, chipId: Int)
     }
 }

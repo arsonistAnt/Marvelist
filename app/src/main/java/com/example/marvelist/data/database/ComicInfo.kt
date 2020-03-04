@@ -20,6 +20,6 @@ class ComicInfo(
     val comicTitle: String,
     val description: String,
     val comicFormat: String,
-    val readingProgress: Int,
-    val comicThumbnailPath: String
+    var readingProgress: Int,
+    var comicThumbnailPath: String
 )

@@ -65,7 +65,7 @@ open class ComicDetail : ComicPreview {
      *
      * @param readingProgress the enum class object.
      */
-    fun readingStatus(readingProgress: ReadingProgress): String = when (progress) {
+    fun readingStatus(): String = when (progress) {
         ReadingProgress.READ -> "Read"
         ReadingProgress.IN_PROGRESS -> "In Progress"
         else -> "Unread"

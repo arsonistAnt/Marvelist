@@ -19,6 +19,9 @@ interface ComicInfoDao {
 
     @Delete
     fun deleteComics(comics: List<ComicInfo>)
+
+    @Update
+    fun updateComicInfo(comicId: ComicInfo)
 }
 
 /**

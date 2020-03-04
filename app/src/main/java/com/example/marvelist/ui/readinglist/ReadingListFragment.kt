@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.marvelist.R
 import com.example.marvelist.data.local.ComicDetail
 import com.example.marvelist.data.local.ComicPreview
+import com.example.marvelist.data.local.ReadingProgress
 import com.example.marvelist.databinding.ReadingListFragLayoutBinding
 import com.example.marvelist.injection.injector
 import com.example.marvelist.injection.viewModel
@@ -22,6 +23,7 @@ import com.example.marvelist.utils.MultiSelectCallbacks
 import com.example.marvelist.utils.toComicInfo
 
 class ReadingListFragment : Fragment(), ComicItemListener.OnItemClicked,
+    ReadingStatusChipListener.OnChipCheckedListener,
     MultiSelectCallbacks.OnUpdateItemSelection<ComicDetail> {
     private lateinit var viewBinding: ReadingListFragLayoutBinding
     private lateinit var readingListAdapter: ReadingListItemAdapter
@@ -74,13 +76,13 @@ class ReadingListFragment : Fragment(), ComicItemListener.OnItemClicked,
             .apply {
                 addItemClickListener(this@ReadingListFragment)
                 addMultiSelectionUpdateListener(this@ReadingListFragment)
+                addChipGroupListener(this@ReadingListFragment)
             }
         binding.readingListRecycler.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = readingListAdapter
         }
     }
-
 
     /**
      * Navigate to the comic details fragment.
@@ -128,6 +130,10 @@ class ReadingListFragment : Fragment(), ComicItemListener.OnItemClicked,
         menu.findItem(R.id.delete_menu_item).isVisible = false
     }
 
+    /**
+     * Handle different actions for the navigate up button or the delete menu item.
+     * This overridden method takes into account if the [readingListAdapter] is in multi-selection mode.
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val supportActionBar = (requireActivity() as AppCompatActivity).supportActionBar
         when (item.itemId) {
@@ -150,7 +156,6 @@ class ReadingListFragment : Fragment(), ComicItemListener.OnItemClicked,
                     val deleteMenuItem = actionBarMenu.findItem(R.id.delete_menu_item)
                     hideDeleteMenuOptions(deleteMenuItem, supportActionBar)
                 }
-
             }
         }
         return true
@@ -169,6 +174,26 @@ class ReadingListFragment : Fragment(), ComicItemListener.OnItemClicked,
     }
 
     /**
+     * Overrides the [ReadingStatusChipListener.OnChipCheckedListener] onChecked() method. This
+     * method will update the current reading status of the [comicDetail] in the local database.
+     *
+     * @param comicDetail the object to update in the local database.
+     * @param chipId the view id of the chip selected in the view holder of [readingListAdapter].
+     *
+     * @see ReadingListItemAdapter
+     */
+    override fun onChecked(comicDetail: ComicDetail, chipId: Int) {
+        val comicInfo = comicDetail.toComicInfo()
+        // Obtain new reading status based on chip checked.
+        val newReadingStatus = when (chipId) {
+            R.id.in_progress_chip -> ReadingProgress.IN_PROGRESS.ordinal
+            R.id.unread_chip -> ReadingProgress.UNREAD.ordinal
+            else -> ReadingProgress.READ.ordinal
+        }
+        readingListViewModel.updateComicReadingStatus(comicInfo, newReadingStatus)
+    }
+
+    /**
      * Cleanup any resources in this callback.
      */
     override fun onDestroyView() {
@@ -177,6 +202,4 @@ class ReadingListFragment : Fragment(), ComicItemListener.OnItemClicked,
         readingListAdapter.removeAllListeners()
         actionBarMenu.clear()
     }
-
-
 }

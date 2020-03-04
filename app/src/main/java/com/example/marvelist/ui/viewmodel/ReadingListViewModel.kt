@@ -54,6 +54,16 @@ class ReadingListViewModel @Inject constructor(private val comicRepo: ComicRepos
     }
 
     /**
+     * Update the reading status of the comic in the database.
+     *
+     * @param comic the [ComicInfo] object that will have its reading progress updated.
+     */
+    fun updateComicReadingStatus(comic: ComicInfo, readingProgress: Int) {
+        comic.readingProgress = readingProgress
+        comicRepo.updateComic(comic).subscribe()
+    }
+
+    /**
      * Cleanup any lingering resources.
      */
     override fun onCleared() {

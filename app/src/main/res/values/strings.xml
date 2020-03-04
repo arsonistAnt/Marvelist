@@ -5,4 +5,7 @@
     <string name="item_preferences">Preferences</string>
     <string name="reading_list_title">Reading List</string>
     <string name="delete_menu_item_str">Delete</string>
+    <string name="unread_chip_title">Unread</string>
+    <string name="read_chip_title">Read</string>
+    <string name="in_progress_chip_title">In Progress</string>
 </resources>
