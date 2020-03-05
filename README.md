@@ -24,5 +24,13 @@ A  Marvel comic book tracker that tracks reading progress on physical or digital
   - Press any of the _Reading_, _Unread_, and _Read_ chips in the reading list section. Note:  The reading list will be empty if you've     havent added a comic yet.
   - No save button needed, once the chips have been pressed the reading progress is saved.
   
+  # Architecture and Navigation Structure Summary
+  This app was created with the MVVM architecture and a "1 Activity hosting many fragments" navigation structure (Navigation Component).
+  ### Model-View-Viewmodel Overview
+  - The _Model_ layer contains a repository of data that can be from the network or the local database. Only the _ViewModel_ knows about the _Model_ layer.
+  - The _View_ observes data that's been exposed/emitted from the _View Model_ and updates the UI accordingly. This layer only knows about the _View Model_.
+  - The _View Model_ exposes and formats data from the _Model_ layer and only knows about the _Model_.
+  
+  
   
 
