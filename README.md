@@ -31,6 +31,17 @@ A  Marvel comic book tracker that tracks reading progress on physical or digital
   - The _View_ observes data that's been exposed/emitted from the _View Model_ and updates the UI accordingly. This layer only knows about the _View Model_.
   - The _View Model_ exposes and formats data from the _Model_ layer and only knows about the _Model_.
   
-  
+    ### Navigation Overview
+    
+    The [NavigationHostActivity](https://github.com/arsonistAnt/Marvelist/blob/master/app/src/main/java/com/example/marvelist/ui/base/NavigationHostActivity.kt) is in charge of navigating/swapping out the different fragments (via [Navigation Component](https://developer.android.com/guide/navigation/navigation-getting-started)). By default the _Browse_ fragment is shown first, the user can navigate to the _Browse_ and _Reading List_ section of the app through the navigation drawer. The _Comic Detail_ section can only be accessed through the _Browse_ or _Reading List_ fragments as shown below:
+
+[Navigation Graph Image]: <> (Display image of the navigation graph.)
+<p align="center">
+  <img src="https://i.imgur.com/2NwMtUH.png" />
+</p>
+    
+
+
+
   
 
