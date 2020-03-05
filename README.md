@@ -1,5 +1,6 @@
 # Marvelist
-A  Marvel comic book tracker that tracks reading progress on physical or digital comics.
+A  Marvel comic book tracker that tracks reading progress on physical or digital comics. Video demo [here](https://youtu.be/69d_HMlNnNU).
+
 
 [![Marvelist Demo](https://j.gifs.com/P799Gn.gif)](https://youtu.be/69d_HMlNnNU)
 
