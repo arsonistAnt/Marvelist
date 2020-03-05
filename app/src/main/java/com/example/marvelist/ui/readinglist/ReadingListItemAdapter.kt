@@ -1,13 +1,13 @@
 package com.example.marvelist.ui.readinglist
 
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.api.load
 import com.example.marvelist.data.local.ComicDetail
 import com.example.marvelist.data.local.ReadingProgress
 import com.example.marvelist.databinding.ReadingStatusItemBinding
@@ -15,7 +15,9 @@ import com.example.marvelist.ui.readinglist.ReadingListItemAdapter.ReadingStatus
 import com.example.marvelist.utils.ComicItemListener
 import com.example.marvelist.utils.MultiSelectCallbacks
 import com.example.marvelist.utils.MultiSelectHandler
+import com.example.marvelist.utils.ThumbnailVariant
 import com.google.android.material.chip.ChipGroup
+import timber.log.Timber
 
 /**
  * Adapter for displaying a list of [ComicDetail] items that has been saved from the local database. Uses the
@@ -40,9 +42,51 @@ class ReadingListItemAdapter(diffCallBack: DiffUtil.ItemCallback<ComicDetail>) :
     class ReadingStatusViewHolder(val binding: ReadingStatusItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        // The readingStatusContainer listener still triggers if the chips are set programmatically.
+        // This boolean is a workaround to prevent it from calling the ReadingStatusChipListener.OnChipCheckedListener?.
+        private var fromSetReadingStatusChip = false
+
         fun bind(comicDetail: ComicDetail) {
-            binding.textView.text = comicDetail.title
+            binding.comicItem = comicDetail
             setReadingStatusChip(comicDetail.progress)
+            assignComicImage(binding, comicDetail.thumbnailUrl)
+            calculateMaxLines(binding)
+        }
+
+        /**
+         * Load the url into the comic_portrait image view.
+         *
+         * @param thumbnailPath the thumbnail path that will be used for the URL construction.
+         * @param binding the view binding that contains the image view.
+         */
+        private fun assignComicImage(binding: ReadingStatusItemBinding, thumbnailPath: String) {
+            // Construct the thumbnail URL and load it into the comic image view.
+            val thumbnailUrl = ThumbnailVariant.constructThumbnailUrl(
+                thumbnailPath,
+                "jpg",
+                ThumbnailVariant.portrait_incredible
+            )
+            // Load the image URL using Coil
+            binding.comicPortrait.load(thumbnailUrl) {
+                crossfade(true)
+                listener(onSuccess = { _, _ -> },
+                    onError = { _, e ->
+                        Timber.e(e)
+                    })
+            }
+        }
+
+        /**
+         * Calculates the maximum number of lines in the text view and assign it.
+         *
+         * @param binding the view binding that contains the image view.
+         */
+        private fun calculateMaxLines(binding: ReadingStatusItemBinding) {
+            binding.comicDescription.viewTreeObserver.addOnGlobalLayoutListener {
+                val maxLines: Int =
+                    binding.comicDescription.height / binding.comicDescription.lineHeight
+                binding.comicDescription.maxLines = maxLines
+            }
         }
 
         /**
@@ -51,9 +95,10 @@ class ReadingListItemAdapter(diffCallBack: DiffUtil.ItemCallback<ComicDetail>) :
          * @param readingProgress the reading progress type
          */
         private fun setReadingStatusChip(readingProgress: ReadingProgress) {
+            fromSetReadingStatusChip = true
             when (readingProgress) {
                 ReadingProgress.IN_PROGRESS -> {
-                    binding.inProgressChip.isChecked = true
+                    binding.readingChip.isChecked = true
                 }
                 ReadingProgress.READ -> {
                     binding.readChip.isChecked = true
@@ -82,7 +127,7 @@ class ReadingListItemAdapter(diffCallBack: DiffUtil.ItemCallback<ComicDetail>) :
             }
             binding.readChip.setOnClickListener(listener)
             binding.unreadChip.setOnClickListener(listener)
-            binding.inProgressChip.setOnClickListener(listener)
+            binding.readingChip.setOnClickListener(listener)
         }
 
         /**
@@ -126,14 +171,14 @@ class ReadingListItemAdapter(diffCallBack: DiffUtil.ItemCallback<ComicDetail>) :
          * Perform any UI changes on the View Holder if it has been selected.
          */
         private fun selectUI() {
-            binding.readingStatusContainer.background = ColorDrawable(Color.parseColor("#b8b8b8"))
+            binding.readingStatusContainer.setCardBackgroundColor(Color.parseColor("#373737"))
         }
 
         /**
          * Undo any UI changes on the View Holder if it has been deselected.
          */
         private fun deselectUI() {
-            binding.readingStatusContainer.background = ColorDrawable(Color.parseColor("#FFFFFF"))
+            binding.readingStatusContainer.setCardBackgroundColor(Color.parseColor("#616161"))
         }
     }
 

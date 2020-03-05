@@ -1,7 +1,6 @@
 package com.example.marvelist.data.local
 
 import com.example.marvelist.data.remote.models.MarvelJson
-import com.example.marvelist.utils.ThumbnailVariant
 
 /**
  * A class that stores comic information passed through either the primary constructor or
@@ -16,10 +15,14 @@ open class ComicDetail : ComicPreview {
     var progress: ReadingProgress = ReadingProgress.UNREAD
 
     companion object {
-        fun constructThumbnailUrl(thumbnail: MarvelJson.Thumbnail) =
-            "${thumbnail.path}${ThumbnailVariant.portraitLarge}${thumbnail.extension}"
-
-        fun getReadingProgressEnum(enumVal: Int) = when (enumVal) {
+        /**
+         * Return the enumeration object based off of the ordinal number.
+         *
+         * @see ReadingProgress
+         *
+         * @param ordinalNumber the ordinal number of [ReadingProgress] objects.
+         */
+        fun getReadingProgressEnum(ordinalNumber: Int) = when (ordinalNumber) {
             0 -> ReadingProgress.IN_PROGRESS
             1 -> ReadingProgress.READ
             else -> ReadingProgress.UNREAD
@@ -50,7 +53,7 @@ open class ComicDetail : ComicPreview {
         marvelComicJson.id,
         marvelComicJson.digitalId,
         marvelComicJson.title,
-        marvelComicJson.description ?: "",
+        marvelComicJson.description ?: "No description available.",
         marvelComicJson.thumbnail.path,
         marvelComicJson.issueNumber,
         marvelComicJson.format

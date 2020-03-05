@@ -5,9 +5,12 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import coil.api.load
 import com.example.marvelist.data.local.ComicPreview
 import com.example.marvelist.databinding.ComicItemLayoutBinding
 import com.example.marvelist.utils.ComicItemListener
+import com.example.marvelist.utils.ThumbnailVariant
+import timber.log.Timber
 
 /**
  * Adapter class to display [ComicPreview] objects in a RecyclerView. This class takes a
@@ -30,6 +33,44 @@ class ComicPreviewPagedAdapter(diffCallBack: DiffUtil.ItemCallback<ComicPreview>
 
         fun bind(comicItem: ComicPreview) {
             binding.comicItem = comicItem
+            assignComicImage(binding, comicItem.thumbnailUrl)
+            calculateMaxLines(binding)
+        }
+
+        /**
+         * Load the url into the comic_portrait image view.
+         *
+         * @param thumbnailPath the thumbnail path that will be used for the URL construction.
+         * @param binding the view binding that contains the image view.
+         */
+        private fun assignComicImage(binding: ComicItemLayoutBinding, thumbnailPath: String) {
+            // Construct the thumbnail URL and load it into the comic image view.
+            val thumbnailUrl = ThumbnailVariant.constructThumbnailUrl(
+                thumbnailPath,
+                "jpg",
+                ThumbnailVariant.portrait_incredible
+            )
+            // Load the image URL using Coil
+            binding.comicPortrait.load(thumbnailUrl) {
+                crossfade(true)
+                listener(onSuccess = { _, _ -> },
+                    onError = { _, e ->
+                        Timber.e(e)
+                    })
+            }
+        }
+
+        /**
+         * Calculates the maximum number of lines in the text view and assign it.
+         *
+         * @param binding the view binding that contains the image view.
+         */
+        private fun calculateMaxLines(binding: ComicItemLayoutBinding) {
+            binding.comicDescription.viewTreeObserver.addOnGlobalLayoutListener {
+                val maxLines: Int =
+                    binding.comicDescription.height / binding.comicDescription.lineHeight
+                binding.comicDescription.maxLines = maxLines
+            }
         }
 
         /**
@@ -39,7 +80,7 @@ class ComicPreviewPagedAdapter(diffCallBack: DiffUtil.ItemCallback<ComicPreview>
          * @see addItemClickListener
          */
         fun addClickListener(action: () -> Unit) {
-            binding.exampleTitle.setOnClickListener {
+            binding.comicPreviewItemContainer.setOnClickListener {
                 action()
             }
         }
@@ -51,7 +92,7 @@ class ComicPreviewPagedAdapter(diffCallBack: DiffUtil.ItemCallback<ComicPreview>
          * @see addItemClickListener
          */
         fun addLongPressListener(action: () -> Unit) {
-            binding.exampleTitle.setOnLongClickListener {
+            binding.comicPreviewItemContainer.setOnLongClickListener {
                 action()
                 true
             }

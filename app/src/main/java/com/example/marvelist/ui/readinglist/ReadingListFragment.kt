@@ -185,7 +185,7 @@ class ReadingListFragment : Fragment(), ComicItemListener.OnItemClicked,
     override fun onChecked(comicDetail: ComicDetail, chipId: Int) {
         // Obtain new reading status based on chip checked.
         val newReadingStatus = when (chipId) {
-            R.id.in_progress_chip -> ReadingProgress.IN_PROGRESS.ordinal
+            R.id.reading_chip -> ReadingProgress.IN_PROGRESS.ordinal
             R.id.unread_chip -> ReadingProgress.UNREAD.ordinal
             else -> ReadingProgress.READ.ordinal
         }

@@ -22,7 +22,7 @@ class ThumbnailVariant {
             extensionType: String,
             portraitSize: String
         ): String {
-            return "$url.$extensionType"
+            return "$url$portraitSize.$extensionType"
         }
     }
 }
