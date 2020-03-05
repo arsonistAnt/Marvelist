@@ -39,9 +39,29 @@ A  Marvel comic book tracker that tracks reading progress on physical or digital
 <p align="center">
   <img src="https://i.imgur.com/2NwMtUH.png" />
 </p>
+
+## View
+There are three different _Views_ in this app's architecture and they are the [BrowseFragment](https://github.com/arsonistAnt/Marvelist/blob/master/app/src/main/java/com/example/marvelist/ui/comicbrowser/BrowseFragment.kt), [ComicDetailsFragment](https://github.com/arsonistAnt/Marvelist/blob/master/app/src/main/java/com/example/marvelist/ui/comicdetails/ComicDetailsFragment.kt), and the [ReadingListFragment](https://github.com/arsonistAnt/Marvelist/blob/master/app/src/main/java/com/example/marvelist/ui/readinglist/ReadingListFragment.kt). All these Fragments observe their respective _ViewModels_ and display the data that's been observed. The reference graph can be seen below:
+
+[View Graph Image]: <> (Display image of the View's graph and relationship to its ViewModels.)
+<p align="center">
+  <img src="https://i.imgur.com/PLqzRXU.png" />
+</p>
+
     
+#### BrowseFragment
+- Displays a preview of comics (picture, title, description) in a list.
+- Save comics into the local data base. (Later to be used in the ReadingListFragment).
+- The list of comics are displayed in chunks via [Pagination Library](https://developer.android.com/topic/libraries/architecture/paging) and its ViewModel provides it with the data source.
 
+#### ComicDetailsFragment
+- Shows a more detailed represenation of the comic thats been tapped on from the _Browse_ or _Reading List_ section.
+- This Fragment request more info about the comic from its ViewModel to display into the UI.
+- Displays author's name, list of creators involved in the comics, on sale date, foc date, etc.
 
-
+#### ReadingListFragment
+- Shows a list of comics that's been saved to the local database.
+- Each comic item displays a group of interactable [Chips](https://material.io/components/chips/) that is used to track reading progress.
+- Allows deletion of comics in the list and updates the database on deletion changes.
   
 
