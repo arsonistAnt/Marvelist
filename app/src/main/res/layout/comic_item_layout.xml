@@ -81,13 +81,11 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
                     android:ellipsize="end"
-                    android:fontFamily="@font/oxygen_bold"
+                    style="@style/TitleText"
                     android:gravity="center_vertical"
                     android:maxLines="2"
                     android:singleLine="false"
                     android:text="@{comicItem.title}"
-                    android:textColor="@android:color/white"
-                    android:textSize="14sp"
                     app:layout_constraintBottom_toTopOf="@+id/guideline2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/guideline"
@@ -105,15 +103,13 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="8dp"
                     android:ellipsize="end"
-                    android:fontFamily="@font/oxygen"
-                    android:text="@{comicItem.comicDescription}"
-                    android:textColor="@android:color/white"
+                    style="@style/SubText"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.6"
                     app:layout_constraintStart_toStartOf="@+id/guideline"
                     app:layout_constraintTop_toTopOf="@+id/guideline2"
-                    tools:text="Comic Description" />
+                    tools:text="@{comicItem.comicDescription}" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 

@@ -15,7 +15,7 @@ import com.example.marvelist.ui.readinglist.ReadingListItemAdapter.ReadingStatus
 import com.example.marvelist.utils.ComicItemListener
 import com.example.marvelist.utils.MultiSelectCallbacks
 import com.example.marvelist.utils.MultiSelectHandler
-import com.example.marvelist.utils.ThumbnailVariant
+import com.example.marvelist.utils.marvelvariants.ThumbnailVariant
 import com.google.android.material.chip.ChipGroup
 import timber.log.Timber
 
@@ -42,14 +42,18 @@ class ReadingListItemAdapter(diffCallBack: DiffUtil.ItemCallback<ComicDetail>) :
     class ReadingStatusViewHolder(val binding: ReadingStatusItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        // The readingStatusContainer listener still triggers if the chips are set programmatically.
-        // This boolean is a workaround to prevent it from calling the ReadingStatusChipListener.OnChipCheckedListener?.
-        private var fromSetReadingStatusChip = false
-
+        /**
+         * Assign data to the views in the binded layout.
+         *
+         * @param comicDetail the [ComicDetail] that will be used to in the layout.
+         */
         fun bind(comicDetail: ComicDetail) {
             binding.comicItem = comicDetail
+            // Change the status chips according to the type of progress comicDetail has.
             setReadingStatusChip(comicDetail.progress)
-            assignComicImage(binding, comicDetail.thumbnailUrl)
+            // Display the comic image from the given thumbnail path.
+            displayComicImage(binding, comicDetail.thumbnailUrl)
+            // Calculate the maximum number of lines for the TextView when it has finished rendering.
             calculateMaxLines(binding)
         }
 
@@ -59,7 +63,7 @@ class ReadingListItemAdapter(diffCallBack: DiffUtil.ItemCallback<ComicDetail>) :
          * @param thumbnailPath the thumbnail path that will be used for the URL construction.
          * @param binding the view binding that contains the image view.
          */
-        private fun assignComicImage(binding: ReadingStatusItemBinding, thumbnailPath: String) {
+        private fun displayComicImage(binding: ReadingStatusItemBinding, thumbnailPath: String) {
             // Construct the thumbnail URL and load it into the comic image view.
             val thumbnailUrl = ThumbnailVariant.constructThumbnailUrl(
                 thumbnailPath,
@@ -95,7 +99,6 @@ class ReadingListItemAdapter(diffCallBack: DiffUtil.ItemCallback<ComicDetail>) :
          * @param readingProgress the reading progress type
          */
         private fun setReadingStatusChip(readingProgress: ReadingProgress) {
-            fromSetReadingStatusChip = true
             when (readingProgress) {
                 ReadingProgress.IN_PROGRESS -> {
                     binding.readingChip.isChecked = true

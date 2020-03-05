@@ -4,7 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 /**
- * Handles unique multiple selection of items type T.
+ * Handles unique multiple selection of items type T. Should mostly be used for
+ * objects that hold data and not for view types belonging to the android framework.
  */
 class MultiSelectHandler<T> {
     private val _selectionSet = MutableLiveData(mutableSetOf<T>())
@@ -115,6 +116,9 @@ class MultiSelectHandler<T> {
 
 }
 
+/**
+ * Interface callback to listen in on [MultiSelectHandler] changes.
+ */
 interface MultiSelectCallbacks {
     interface OnUpdateItemSelection<T> {
         fun onUpdateSelection(item: T, size: Int)

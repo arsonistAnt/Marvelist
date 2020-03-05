@@ -8,4 +8,10 @@
     <string name="unread_chip_title">Unread</string>
     <string name="read_chip_title">Read</string>
     <string name="reading_chip_title">Reading</string>
+    <string name="published_header_title">Published:</string>
+    <string name="author_header_title">Author:</string>
+    <string name="foc_date_header_title">FOC Date:</string>
+    <string name="description_header_title">Description:</string>
+    <string name="credits_header_title">Credits:</string>
+    <string name="role_name_text">Role: %1$s</string>
 </resources>

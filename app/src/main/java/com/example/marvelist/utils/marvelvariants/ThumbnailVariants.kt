@@ -1,5 +1,8 @@
-package com.example.marvelist.utils
+package com.example.marvelist.utils.marvelvariants
 
+/**
+ * The different type of portrait sizes for the comic images.
+ */
 class ThumbnailVariant {
     companion object {
         const val portraitSmall = "/portrait_small"

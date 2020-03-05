@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Bind the ComicDetails object to this layout.-->
     <data>
@@ -9,21 +11,221 @@
             type="com.example.marvelist.data.local.ComicDetail" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#616161"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/comicStuff"
-            android:layout_width="match_parent"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/desc_guideline"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{comicDetails.toString()}" />
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="293dp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@{comicDetails.comicDescription}" />
-    </LinearLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="2dp"
+            app:layout_constraintBottom_toBottomOf="@id/desc_guideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/comic_image_guidline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="190dp" />
+
+            <ImageView
+                android:id="@+id/comic_portrait"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/comic_image_guidline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/comic_title"
+                style="@style/TitleText"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="8dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/oxygen_bold"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:text="@{comicDetails.title}"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toTopOf="@+id/guideline6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/comic_image_guidline"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Comic Title" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="63dp" />
+
+            <LinearLayout
+                android:id="@+id/meta_data_container"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/comic_image_guidline"
+                app:layout_constraintTop_toTopOf="@+id/guideline6">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/published_header"
+                        style="@style/HeaderText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/oxygen_bold"
+                        android:text="@string/published_header_title"
+                        android:textColor="@android:color/white" />
+
+                    <TextView
+                        android:id="@+id/date_published"
+                        style="@style/SubText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="March 04, 2020" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/foc_header_date"
+                        style="@style/HeaderText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/foc_date_header_title" />
+
+                    <TextView
+                        android:id="@+id/foc_date_title"
+                        style="@style/SubText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="March 04, 2020" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/author_header"
+                        style="@style/HeaderText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/oxygen_bold"
+                        android:text="@string/author_header_title"
+                        android:textColor="@android:color/white" />
+
+                    <TextView
+                        android:id="@+id/author_name"
+                        style="@style/SubText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Skottie Young" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/desc_container"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/credits_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/desc_guideline">
+
+            <TextView
+                android:id="@+id/desc_header"
+                style="@style/HeaderText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="@string/description_header_title" />
+
+            <TextView
+                android:id="@+id/desc_text"
+                style="@style/SubText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:text="@{comicDetails.comicDescription}" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/credits_container"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/desc_container">
+
+            <TextView
+                android:id="@+id/credits_header"
+                style="@style/HeaderText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/credits_header_title" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/credits_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

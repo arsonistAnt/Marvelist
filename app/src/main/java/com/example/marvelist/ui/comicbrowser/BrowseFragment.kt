@@ -23,7 +23,7 @@ import com.example.marvelist.utils.ComicItemListener
 class BrowseFragment : Fragment(), ComicItemListener.OnItemClicked,
     ComicItemListener.OnItemLongPressed {
     private lateinit var viewBinding: BrowseFragLayoutBinding
-    private lateinit var comicPagedAdapter: ComicPreviewPagedAdapter
+    private lateinit var comicPagingAdapter: ComicPreviewPagingAdapter
 
     // Provide the BrowserViewModel via injector dagger component.
     private val browserViewModel by viewModel {
@@ -58,7 +58,7 @@ class BrowseFragment : Fragment(), ComicItemListener.OnItemClicked,
      */
     private fun setupObservableData() {
         browserViewModel.comicPagedList.observe(viewLifecycleOwner, Observer {
-            comicPagedAdapter.submitList(it)
+            comicPagingAdapter.submitList(it)
         })
     }
 
@@ -69,13 +69,13 @@ class BrowseFragment : Fragment(), ComicItemListener.OnItemClicked,
      */
     private fun setupComicBrowser(binding: BrowseFragLayoutBinding) {
         // Configure the ComicPreviewAdapter
-        comicPagedAdapter = ComicPreviewPagedAdapter(diffUtilCallback).apply {
+        comicPagingAdapter = ComicPreviewPagingAdapter(diffUtilCallback).apply {
             addItemClickListener(this@BrowseFragment)
             addItemLongPressedListener(this@BrowseFragment)
         }
         // Configure the RecyclerView.
         binding.comicBrowseRecycler.apply {
-            adapter = comicPagedAdapter
+            adapter = comicPagingAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
     }
@@ -87,11 +87,11 @@ class BrowseFragment : Fragment(), ComicItemListener.OnItemClicked,
         super.onDestroyView()
         viewBinding.unbind()
         // Removes fragment reference from the comicAdapter.
-        comicPagedAdapter.removeAllListeners()
+        comicPagingAdapter.removeAllListeners()
     }
 
     /**
-     * OnClick method for [ComicPreviewPagedAdapter] items. Action in this method will be
+     * OnClick method for [ComicPreviewPagingAdapter] items. Action in this method will be
      * used for navigational purposes, more specifically navigating to the [ComicDetailsFragment].
      *
      * @see ComicItemListener.OnItemClicked
@@ -103,7 +103,7 @@ class BrowseFragment : Fragment(), ComicItemListener.OnItemClicked,
     }
 
     /**
-     * onLongPressed method for [ComicPreviewPagedAdapter] items.
+     * onLongPressed method for [ComicPreviewPagingAdapter] items.
      *
      * @see ComicItemListener.OnItemLongPressed
      */

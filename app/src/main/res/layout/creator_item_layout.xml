@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="creatorItem"
+            type="com.example.marvelist.data.remote.models.MarvelJson.Creator" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="#616161"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/author_name_text"
+        app:layout_constraintTop_toBottomOf="@+id/author_name_text">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/author_name_text"
+                style="@style/SubText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{creatorItem.name}"
+                app:layout_constraintBottom_toTopOf="@+id/role_text"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:layout_conversion_absoluteHeight="20dp"
+                tools:layout_conversion_absoluteWidth="84dp"
+                tools:text="Author Name" />
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp" />
+
+            <TextView
+                android:id="@+id/role_text"
+                style="@style/SubText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/author_name_text"
+                tools:layout_conversion_absoluteHeight="20dp"
+                tools:layout_conversion_absoluteWidth="73dp"
+                tools:text="Role: writer" />
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

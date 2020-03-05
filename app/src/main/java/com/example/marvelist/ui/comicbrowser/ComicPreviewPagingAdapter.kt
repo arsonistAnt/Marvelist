@@ -9,7 +9,8 @@ import coil.api.load
 import com.example.marvelist.data.local.ComicPreview
 import com.example.marvelist.databinding.ComicItemLayoutBinding
 import com.example.marvelist.utils.ComicItemListener
-import com.example.marvelist.utils.ThumbnailVariant
+import com.example.marvelist.utils.calculateMaxLines
+import com.example.marvelist.utils.marvelvariants.ThumbnailVariant
 import timber.log.Timber
 
 /**
@@ -17,8 +18,8 @@ import timber.log.Timber
  * PagedList of type [ComicPreview] to load comic book data from the network.
  *
  */
-class ComicPreviewPagedAdapter(diffCallBack: DiffUtil.ItemCallback<ComicPreview>) :
-    PagedListAdapter<ComicPreview, ComicPreviewPagedAdapter.ComicViewHolder>(diffCallBack) {
+class ComicPreviewPagingAdapter(diffCallBack: DiffUtil.ItemCallback<ComicPreview>) :
+    PagedListAdapter<ComicPreview, ComicPreviewPagingAdapter.ComicViewHolder>(diffCallBack) {
 
     // An onClick listener for the  ComicViewHolder.
     private var onClickListener: ComicItemListener.OnItemClicked? = null
@@ -34,7 +35,7 @@ class ComicPreviewPagedAdapter(diffCallBack: DiffUtil.ItemCallback<ComicPreview>
         fun bind(comicItem: ComicPreview) {
             binding.comicItem = comicItem
             assignComicImage(binding, comicItem.thumbnailUrl)
-            calculateMaxLines(binding)
+            binding.comicDescription.calculateMaxLines()
         }
 
         /**
@@ -57,19 +58,6 @@ class ComicPreviewPagedAdapter(diffCallBack: DiffUtil.ItemCallback<ComicPreview>
                     onError = { _, e ->
                         Timber.e(e)
                     })
-            }
-        }
-
-        /**
-         * Calculates the maximum number of lines in the text view and assign it.
-         *
-         * @param binding the view binding that contains the image view.
-         */
-        private fun calculateMaxLines(binding: ComicItemLayoutBinding) {
-            binding.comicDescription.viewTreeObserver.addOnGlobalLayoutListener {
-                val maxLines: Int =
-                    binding.comicDescription.height / binding.comicDescription.lineHeight
-                binding.comicDescription.maxLines = maxLines
             }
         }
 

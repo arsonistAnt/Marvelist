@@ -133,8 +133,10 @@
                         android:layout_height="wrap_content"
                         android:checkable="true"
                         android:text="@string/unread_chip_title"
+                        android:textColor="@color/chip_text_color_state"
                         android:theme="@style/Widget.MaterialComponents.Chip.Choice"
-                        app:checkedIconEnabled="false" />
+                        app:checkedIconEnabled="false"
+                        app:chipBackgroundColor="@color/bg_chip_state" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/read_chip"
@@ -142,8 +144,11 @@
                         android:layout_height="wrap_content"
                         android:checkable="true"
                         android:text="@string/read_chip_title"
+                        android:textColor="@color/chip_text_color_state"
+                        android:textColorHighlight="@android:color/white"
                         android:theme="@style/Widget.MaterialComponents.Chip.Choice"
-                        app:checkedIconEnabled="false" />
+                        app:checkedIconEnabled="false"
+                        app:chipBackgroundColor="@color/bg_chip_state" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/reading_chip"
@@ -151,8 +156,10 @@
                         android:layout_height="wrap_content"
                         android:checkable="true"
                         android:text="@string/reading_chip_title"
+                        android:textColor="@color/chip_text_color_state"
                         android:theme="@style/Widget.MaterialComponents.Chip.Choice"
-                        app:checkedIconEnabled="false" />
+                        app:checkedIconEnabled="false"
+                        app:chipBackgroundColor="@color/bg_chip_state" />
                 </com.google.android.material.chip.ChipGroup>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
