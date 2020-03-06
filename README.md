@@ -49,9 +49,8 @@ There are three different _Views_ in this app's architecture and they are the [B
 
     
 #### BrowseFragment
-- Displays a preview of comics (picture, title, description) in a list.
-- Save comics into the local data base. (Later to be used in the ReadingListFragment).
-- The list of comics are displayed in chunks via [Pagination Library](https://developer.android.com/topic/libraries/architecture/paging) and its ViewModel provides it with the data source.
+- Lazily loads a list of preview of comics (picture, title, description) in the UI.
+- Handles long press interaction (Long press to save a comic to the reading list)
 
 #### ComicDetailsFragment
 - Shows a more detailed represenation of the comic thats been tapped on from the _Browse_ or _Reading List_ section.
@@ -61,6 +60,25 @@ There are three different _Views_ in this app's architecture and they are the [B
 #### ReadingListFragment
 - Shows a list of comics that's been saved to the local database.
 - Each comic item displays a group of interactable [Chips](https://material.io/components/chips/) that is used to track reading progress.
-- Allows deletion of comics in the list and updates the database on deletion changes.
-  
+- Allows deletion of comics in the reading list.
+
+## View Model
+There are three different _View Models_ the [BrowseViewModel](https://github.com/arsonistAnt/Marvelist/blob/master/app/src/main/java/com/example/marvelist/ui/viewmodel/BrowseViewModel.kt), [ComicDetailsViewModel](https://github.com/arsonistAnt/Marvelist/blob/master/app/src/main/java/com/example/marvelist/ui/viewmodel/ComicDetailsViewModel.kt), and the [ReadingListViewModel](https://github.com/arsonistAnt/Marvelist/blob/master/app/src/main/java/com/example/marvelist/ui/viewmodel/ReadingListViewModel.kt). The purpose of these models is to expose data that's relevant to the UI. For example the BrowseViewModel will retrieve/expose a data source for the purpose of loading comic book data in chunks.
+
+[View Model Graph Image]: <> (Display image of the ViewModels graph)
+<p align="center">
+  <img src="https://i.imgur.com/zdbzdxa.png" />
+</p>
+
+#### BrowseViewModel
+- Retrieves the comic data source that emits comic data in chunks via [Pagination Library](https://developer.android.com/topic/libraries/architecture/paging)
+- Tells the _Model_ layer to a specific comic book to the database.
+
+#### ComicDetailsViewModel
+- Requests comic book info from the _Model_ layer.
+- Presents its _View_ with more comic book information.
+
+#### ReadingListViewModel
+- Requests a list of saved comic books from the _Model_ layer.
+- Can request update changes to the reading progress for a comic in the database. 
 
