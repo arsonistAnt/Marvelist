@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="293dp" />
+            app:layout_constraintGuide_percent=".40" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="190dp" />
+                app:layout_constraintGuide_percent=".45" />
 
             <ImageView
                 android:id="@+id/comic_portrait"
@@ -69,18 +69,18 @@
                 android:maxLines="2"
                 android:text="@{comicDetails.title}"
                 android:textColor="@android:color/white"
-                app:layout_constraintBottom_toTopOf="@+id/guideline6"
+                app:layout_constraintBottom_toTopOf="@+id/comic_title_guidline"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/comic_image_guidline"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Comic Title" />
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline6"
+                android:id="@+id/comic_title_guidline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="63dp" />
+                app:layout_constraintGuide_percent=".22" />
 
             <LinearLayout
                 android:id="@+id/meta_data_container"
@@ -96,7 +96,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/comic_image_guidline"
-                app:layout_constraintTop_toTopOf="@+id/guideline6">
+                app:layout_constraintTop_toTopOf="@+id/comic_title_guidline">
 
                 <LinearLayout
                     android:layout_width="match_parent"
