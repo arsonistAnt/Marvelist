@@ -76,9 +76,9 @@ There are three different _View Models_ the [BrowseViewModel](https://github.com
 
 #### ComicDetailsViewModel
 - Requests comic book info from the _Model_ layer.
-- Presents its _View_ with more comic book information.
 
 #### ReadingListViewModel
 - Requests a list of saved comic books from the _Model_ layer.
+- Can request to remove certain comic books by id from the database.
 - Can request update changes to the reading progress property for a comic in the database. 
 
