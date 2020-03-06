@@ -72,7 +72,7 @@ There are three different _View Models_ the [BrowseViewModel](https://github.com
 
 #### BrowseViewModel
 - Retrieves the comic data source that emits comic data in chunks via [Pagination Library](https://developer.android.com/topic/libraries/architecture/paging)
-- Tells the _Model_ layer to a specific comic book to the database.
+- Tells the _Model_ layer to save a specific comic book to the database.
 
 #### ComicDetailsViewModel
 - Requests comic book info from the _Model_ layer.
@@ -80,5 +80,5 @@ There are three different _View Models_ the [BrowseViewModel](https://github.com
 
 #### ReadingListViewModel
 - Requests a list of saved comic books from the _Model_ layer.
-- Can request update changes to the reading progress for a comic in the database. 
+- Can request update changes to the reading progress property for a comic in the database. 
 
