@@ -59,13 +59,13 @@ There are three different _Views_ in this app's architecture and they are the [B
 
     
 #### BrowseFragment
-- Lazily loads a list of preview of comics (picture, title, description) in the UI.
+- Lazily loads a list of comics (picture, title, description) in the UI.
 - Handles long press interaction (Long press to save a comic to the reading list)
 
 #### ComicDetailsFragment
 - Shows a more detailed represenation of the comic thats been tapped on from the _Browse_ or _Reading List_ section.
 - This Fragment request more info about the comic from its ViewModel to display into the UI.
-- Displays author's name, list of creators involved in the comics, on sale date, foc date, etc.
+- Displays author's name, list of creators involved in the comic, on sale date, foc date, etc.
 
 #### ReadingListFragment
 - Shows a list of comics that's been saved to the local database.
@@ -104,7 +104,7 @@ In the model layer the [ComicRepository](https://github.com/arsonistAnt/Marvelis
 1. [MarvelHashUtil](https://github.com/arsonistAnt/Marvelist/blob/master/app/src/main/java/com/example/marvelist/utils/MarvelHashUtil.kt)
     - Each API request requires a hash value, this class helps calculate that hash.
 2. [MarvelComicService](https://github.com/arsonistAnt/Marvelist/blob/master/app/src/main/java/com/example/marvelist/data/remote/networking/MarvelComicService.kt)
-    - Leverages the [Retrofit](https://square.github.io/retrofit/) library to make type safe and functionalized requests to the Marvel API service.
+    - Leverages the [Retrofit](https://square.github.io/retrofit/) library to make type safe and functionalized API requests to the Marvel comic book service.
 3. [ComicInfoDao](https://github.com/arsonistAnt/Marvelist/blob/master/app/src/main/java/com/example/marvelist/data/database/ComicDatabase.kt)
     - A data base access object that contains methods for updating, retrieving, and removal of local comic book data.
 
