@@ -80,5 +80,15 @@ There are three different _View Models_ the [BrowseViewModel](https://github.com
 #### ReadingListViewModel
 - Requests a list of saved comic books from the _Model_ layer.
 - Can request to remove certain comic books by id from the database.
-- Can request update changes to the reading progress property for a comic in the database. 
+- Can request update changes to the reading progress property for a comic in the database.
+
+## Model
+In the model layer the [ComicRepository](https://github.com/arsonistAnt/Marvelist/blob/master/app/src/main/java/com/example/marvelist/data/repository/ComicRepository.kt) class is responsible for requesting data from the Marvel API and also updating/retrieving saved comic book data from the local [Room](https://developer.android.com/topic/libraries/architecture/room) database.
+
+[View Model Graph Image]: <> (Display image of the ViewModels graph)
+<p align="center">
+  <img src="https://i.imgur.com/wZwKBSR.png" />
+</p>
+
+
 
