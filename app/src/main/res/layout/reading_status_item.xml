@@ -61,14 +61,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_begin="165dp" />
+                    app:layout_constraintGuide_percent=".35" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="50dp" />
+                    app:layout_constraintGuide_percent=".25" />
 
                 <TextView
                     android:id="@+id/comic_title"
