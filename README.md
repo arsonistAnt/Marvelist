@@ -87,8 +87,16 @@ In the model layer the [ComicRepository](https://github.com/arsonistAnt/Marvelis
 
 [View Model Graph Image]: <> (Display image of the ViewModels graph)
 <p align="center">
-  <img src="https://i.imgur.com/wZwKBSR.png" />
+  <img src="https://i.imgur.com/vV2cUmo.png" />
 </p>
+
+#### The _ComicRepository_ depends on three classes to perform its tasks:
+1. [MarvelHashUtil](https://github.com/arsonistAnt/Marvelist/blob/master/app/src/main/java/com/example/marvelist/utils/MarvelHashUtil.kt)
+    - Each API request requires a hash value, this class helps calculate that hash.
+2. [MarvelComicService](https://github.com/arsonistAnt/Marvelist/blob/master/app/src/main/java/com/example/marvelist/data/remote/networking/MarvelComicService.kt)
+    - Leverages the [Retrofit](https://square.github.io/retrofit/) library to make type safe and functionalized requests to the Marvel API service.
+3. [ComicInfoDao](https://github.com/arsonistAnt/Marvelist/blob/master/app/src/main/java/com/example/marvelist/data/database/ComicDatabase.kt)
+    - A data base access object that contains methods for updating, retrieving, and removal of local comic book data.
 
 
 
