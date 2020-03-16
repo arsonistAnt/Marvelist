@@ -16,7 +16,7 @@ class MarvelApiInfo {
         const val DEFAULT_RESULT_LIMIT = 5
         const val DEFAULT_FORMAT_TYPE = "comic" // Results should show a series or comics
         const val DEFAULT_FORMAT = "comic"       // Results should show digital comics or physical.
-        const val DEFAULT_ORDER_BY = "-modified" // Sort by date modified in descending order.
+        const val DEFAULT_ORDER_BY = "-focDate" // Sort by date modified in descending order.
         // Misc.
         const val hashType = "MD5"
         private const val privateKey = "1bb2861c82d637c7d73a2c1a48c1b15bf487d969"
