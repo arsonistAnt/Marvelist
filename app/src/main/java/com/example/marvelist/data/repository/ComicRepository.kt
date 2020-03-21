@@ -7,6 +7,7 @@ import com.example.marvelist.data.remote.models.ResponseJson
 import com.example.marvelist.data.remote.networking.MarvelComicService
 import com.example.marvelist.data.remote.networking.comicpaging.ComicDataSourceFactory
 import com.example.marvelist.utils.MarvelHashUtil
+import com.example.marvelist.utils.NetworkResponseHandler
 import com.example.marvelist.utils.scheduleAsync
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -20,7 +21,8 @@ import javax.inject.Inject
 class ComicRepository @Inject constructor(
     private val marvelService: MarvelComicService,
     private val marvelHashUtil: MarvelHashUtil,
-    private val comicInfoDao: ComicInfoDao
+    private val comicInfoDao: ComicInfoDao,
+    private val networkResponseHandler: NetworkResponseHandler
 ) {
 
     // Methods that deal with network requests.
@@ -31,7 +33,7 @@ class ComicRepository @Inject constructor(
      * @return a [ComicDataSourceFactory] object.
      */
     fun getComicDataSourceFactory(): ComicDataSourceFactory =
-        ComicDataSourceFactory(marvelService, marvelHashUtil)
+        ComicDataSourceFactory(marvelService, marvelHashUtil, networkResponseHandler)
 
     /**
      * Request comic book details from API specified by comic ID, using the
@@ -45,15 +47,6 @@ class ComicRepository @Inject constructor(
         val timeStamp = "$comicId"
         val hash = marvelHashUtil.calculateHash(timeStamp)
         return marvelService.getComic(comicId, timeStamp, hash)
-            .scheduleAsync()
-            .doOnError {
-                // TODO: Error checking needs to be done here.
-                Timber.e(it)
-            }
-            .doOnNext {
-                // TODO: Check for correct status response.
-                Timber.i(it.status)
-            }
     }
 
     // Methods that deal with local storage or Room.
