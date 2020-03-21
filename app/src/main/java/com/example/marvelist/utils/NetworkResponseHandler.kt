@@ -26,7 +26,7 @@ class NetworkResponseHandler @Inject constructor() {
              * @return an [NetworkResponseHandler.Status] enum value
              */
             fun getNetworkStatus(httpResponseCode: Int) = when (httpResponseCode) {
-                200 - 299 -> Status.SUCCESS
+                in 200..299 -> Status.SUCCESS
                 else -> Status.FAILED
             }
         }
@@ -47,7 +47,7 @@ class NetworkResponseHandler @Inject constructor() {
     fun createNetworkResult(httpResponseCode: Int): Response {
         // Construct message based on response code.
         val message = when (httpResponseCode) {
-            200 - 299 -> "HTTP Request successful."
+            in 200..299 -> "HTTP Request successful."
             else -> "An error has occurred http code: $httpResponseCode"
         }
         // Get status Network status based on response code.
