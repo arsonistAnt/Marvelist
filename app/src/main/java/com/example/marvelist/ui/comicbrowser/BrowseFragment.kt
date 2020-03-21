@@ -19,6 +19,8 @@ import com.example.marvelist.injection.injector
 import com.example.marvelist.injection.viewModel
 import com.example.marvelist.ui.comicdetails.ComicDetailsFragment
 import com.example.marvelist.utils.ComicItemListener
+import com.example.marvelist.utils.NetworkResponseHandler
+import com.google.android.material.snackbar.Snackbar
 
 class BrowseFragment : Fragment(), ComicItemListener.OnItemClicked,
     ComicItemListener.OnItemLongPressed {
@@ -57,9 +59,36 @@ class BrowseFragment : Fragment(), ComicItemListener.OnItemClicked,
      * Observe data emitted from the ViewModel object.
      */
     private fun setupObservableData() {
-        browserViewModel.comicPagedList.observe(viewLifecycleOwner, Observer {
-            comicPagingAdapter.submitList(it)
+        browserViewModel.comicPagedList.observe(viewLifecycleOwner, Observer { comicPreviewList ->
+            comicPagingAdapter.submitList(comicPreviewList)
         })
+
+        // Observe the network state.
+        browserViewModel.browseNetworkResponse.observe(viewLifecycleOwner, Observer { response ->
+            if (response.status == NetworkResponseHandler.Status.FAILED) {
+                showNetworkSnackBarError(response, viewBinding.root)
+            }
+        })
+    }
+
+    /**
+     * Show a snack bar that displays a retry button and the network error message.
+     *
+     * @param networkResponse a [NetworkResponseHandler.Response] that contains the HTTP response code and messages.
+     * @param view the view that the snack bar will reside in.
+     */
+    private fun showNetworkSnackBarError(
+        networkResponse: NetworkResponseHandler.Response,
+        view: View
+    ) {
+        Snackbar.make(
+            view,
+            networkResponse.message,
+            Snackbar.LENGTH_INDEFINITE
+        )
+            .setAction("Retry") {
+                browserViewModel.refreshComicBrowser()
+            }.show()
     }
 
     /**
@@ -108,9 +137,8 @@ class BrowseFragment : Fragment(), ComicItemListener.OnItemClicked,
      * @see ComicItemListener.OnItemLongPressed
      */
     override fun onLongPressed(comicItem: ComicPreview, position: Int) {
-        // Change action bar icons
-
         browserViewModel.saveComicLocalDatabase(comicItem as ComicDetail)
+        // Display a toast to user that the comic has been saved.
         Toast.makeText(
             requireContext(),
             "Added  \"${comicItem.title}\" to the Reading List.",

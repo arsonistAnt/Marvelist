@@ -17,11 +17,13 @@ import com.example.marvelist.data.remote.models.MarvelJson
 import com.example.marvelist.databinding.ComicDetailsFragLayoutBinding
 import com.example.marvelist.injection.injector
 import com.example.marvelist.injection.viewModel
+import com.example.marvelist.utils.NetworkResponseHandler
 import com.example.marvelist.utils.calculateMaxLines
 import com.example.marvelist.utils.formatDateString
 import com.example.marvelist.utils.marvelvariants.CreatorVariants
 import com.example.marvelist.utils.marvelvariants.DateVariants
 import com.example.marvelist.utils.marvelvariants.ThumbnailVariant
+import com.google.android.material.snackbar.Snackbar
 
 class ComicDetailsFragment : Fragment() {
     private lateinit var viewBinding: ComicDetailsFragLayoutBinding
@@ -80,6 +82,19 @@ class ComicDetailsFragment : Fragment() {
         detailsViewModel.comicDetailData.observe(viewLifecycleOwner, Observer {
             displayComicBookDetails(viewBinding, it)
         })
+
+        detailsViewModel.comicDetailsNetworkStatus.observe(
+            viewLifecycleOwner,
+            Observer { response ->
+                if (response.status == NetworkResponseHandler.Status.FAILED) {
+                    Snackbar.make(viewBinding.root, response.message, Snackbar.LENGTH_INDEFINITE)
+                        .setAction("Retry") {
+                            // Request comic book details from the view model again.s
+                            requestComicBookDetails()
+                        }
+                        .show()
+                }
+            })
     }
 
     /**

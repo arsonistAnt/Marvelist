@@ -1,14 +1,16 @@
 package com.example.marvelist.data.remote.networking.comicpaging
 
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PositionalDataSource
 import com.example.marvelist.data.local.ComicDetail
+import com.example.marvelist.data.remote.models.ResponseJson
 import com.example.marvelist.data.remote.networking.MarvelComicService
 import com.example.marvelist.utils.MarvelHashUtil
-import com.example.marvelist.utils.scheduleAsync
+import com.example.marvelist.utils.NetworkResponseHandler
+import com.example.marvelist.utils.handleNetworkResponse
 import com.example.marvelist.utils.toComicDetails
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -18,9 +20,13 @@ import javax.inject.Inject
  */
 class ComicDataSource @Inject constructor(
     private val marvelService: MarvelComicService,
-    private val marvelHashUtil: MarvelHashUtil
+    private val marvelHashUtil: MarvelHashUtil,
+    private val networkResponseHandler: NetworkResponseHandler
 ) :
-    PositionalDataSource<ComicDetail>() {
+    PositionalDataSource<ComicDetail>(), NetworkResponseHandler.ResponseCallback {
+
+    // Observe in the View layer to keep track of network state.
+    override val networkResponse = MutableLiveData<NetworkResponseHandler.Response>()
 
     private val disposable: CompositeDisposable = CompositeDisposable()
 
@@ -32,22 +38,18 @@ class ComicDataSource @Inject constructor(
             hash,
             params.loadSize
         )
-            .scheduleAsync()
-            .doOnError {
-                // TODO: Add error callback here.
-                Timber.e(it)
-            }
-            .doOnNext { responseJson ->
-                // TODO: Add error callback here.
-                Timber.i(responseJson.status)
-            }
-            .map {
-                it.data
-            }
-            .subscribe { container ->
-                val results = container.results.map { it.toComicDetails() }
-                callback.onResult(results)
-            }.addTo(disposable)
+            .handleNetworkResponse(networkResponseHandler, networkResponse)
+            .subscribe(
+                // Successful response.
+                { container: ResponseJson.Container ->
+                    val results = container.results.map { it.toComicDetails() }
+                    callback.onResult(results)
+                },
+                // Error occurred submit an empty list.
+                {
+                    callback.onResult(emptyList())
+                }
+            ).addTo(disposable)
     }
 
     override fun loadInitial(
@@ -61,22 +63,18 @@ class ComicDataSource @Inject constructor(
             hash,
             params.requestedLoadSize
         )
-            .scheduleAsync()
-            .doOnError {
-                // TODO: Add error callback here.
-                Timber.e(it)
-            }
-            .doOnNext { responseJson ->
-                // TODO: Add error callback here.
-                Timber.i(responseJson.status)
-            }
-            .map {
-                it.data
-            }
-            .subscribe { container ->
-                val results = container.results.map { it.toComicDetails() }
-                callback.onResult(results, params.requestedStartPosition, container.total)
-            }.addTo(disposable)
+            .handleNetworkResponse(networkResponseHandler, networkResponse)
+            .subscribe(
+                // On success.
+                { container: ResponseJson.Container ->
+                    val results = container.results.map { it.toComicDetails() }
+                    callback.onResult(results, params.requestedStartPosition, container.total)
+                },
+                // On error occurred, submit an empty list to stop paging for data.
+                {
+                    callback.onResult(emptyList(), 0)
+                }
+            ).addTo(disposable)
     }
 
     override fun invalidate() {
